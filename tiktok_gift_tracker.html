@@ -1,0 +1,608 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>TikTok Live Gift Tracker - @sebsshoprblx</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #0a0a0a, #1a1a1a, #2a2a2a);
+            min-height: 100vh;
+            color: #ffffff;
+            overflow-x: hidden;
+        }
+
+        .container {
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+
+        .header {
+            text-align: center;
+            margin-bottom: 40px;
+            padding: 20px;
+            background: rgba(255,255,255,0.05);
+            border-radius: 15px;
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(255,255,255,0.1);
+        }
+
+        .title {
+            font-size: 2.5rem;
+            font-weight: 300;
+            margin-bottom: 10px;
+            color: #ffffff;
+            letter-spacing: 2px;
+        }
+
+        .subtitle {
+            font-size: 1.2rem;
+            color: #888;
+            font-weight: 300;
+        }
+
+        .status-bar {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 30px;
+            padding: 15px 20px;
+            background: rgba(255,255,255,0.05);
+            border-radius: 10px;
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(255,255,255,0.1);
+        }
+
+        .live-status {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            font-size: 0.9rem;
+            color: #00ff88;
+        }
+
+        .live-dot {
+            width: 8px;
+            height: 8px;
+            background: #00ff88;
+            border-radius: 50%;
+            animation: pulse 2s infinite;
+        }
+
+        @keyframes pulse {
+            0% { opacity: 1; }
+            50% { opacity: 0.3; }
+            100% { opacity: 1; }
+        }
+
+        .webhook-status {
+            font-size: 0.85rem;
+            color: #888;
+        }
+
+        .main-grid {
+            display: block;
+            margin-bottom: 30px;
+        }
+
+        .timer-section {
+            background: rgba(255,255,255,0.05);
+            border-radius: 15px;
+            padding: 25px;
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(255,255,255,0.1);
+        }
+
+        .timer-display {
+            font-size: 3.5rem;
+            font-weight: 100;
+            text-align: center;
+            margin-bottom: 20px;
+            color: #ffffff;
+            font-family: 'Courier New', monospace;
+        }
+
+        .timer-controls {
+            display: flex;
+            justify-content: center;
+            gap: 12px;
+            margin-bottom: 20px;
+        }
+
+        .btn {
+            padding: 10px 20px;
+            border: none;
+            border-radius: 8px;
+            font-size: 0.95rem;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            font-weight: 400;
+            letter-spacing: 0.5px;
+        }
+
+        .btn-start {
+            background: #00ff88;
+            color: #000;
+        }
+
+        .btn-pause {
+            background: #ffaa00;
+            color: #000;
+        }
+
+        .btn-reset {
+            background: #ff4444;
+            color: #fff;
+        }
+
+        .btn:hover {
+            transform: translateY(-1px);
+            opacity: 0.9;
+        }
+
+        .custom-timer {
+            margin-top: 20px;
+            text-align: center;
+        }
+
+        .custom-timer input {
+            padding: 8px 12px;
+            border: 1px solid rgba(255,255,255,0.2);
+            border-radius: 6px;
+            background: rgba(0,0,0,0.3);
+            color: #fff;
+            font-size: 0.9rem;
+            width: 80px;
+            margin-right: 10px;
+        }
+
+        .settings-panel {
+            background: rgba(255,255,255,0.05);
+            border-radius: 15px;
+            padding: 25px;
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(255,255,255,0.1);
+        }
+
+        .settings-title {
+            font-size: 1.3rem;
+            margin-bottom: 20px;
+            color: #ffffff;
+            font-weight: 300;
+        }
+
+        .manual-input {
+            margin-top: 20px;
+        }
+
+        .input-group {
+            display: flex;
+            gap: 8px;
+            margin-bottom: 10px;
+        }
+
+        input[type="text"], input[type="number"] {
+            flex: 1;
+            padding: 10px;
+            border: 1px solid rgba(255,255,255,0.2);
+            border-radius: 6px;
+            background: rgba(0,0,0,0.3);
+            color: #fff;
+            font-size: 0.9rem;
+        }
+
+        input::placeholder {
+            color: #666;
+        }
+
+        .btn-add {
+            background: #4a90ff;
+            color: white;
+            min-width: 80px;
+        }
+
+        .leaderboard {
+            background: rgba(255,255,255,0.05);
+            border-radius: 15px;
+            padding: 25px;
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(255,255,255,0.1);
+        }
+
+        .leaderboard-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 25px;
+        }
+
+        .leaderboard-title {
+            font-size: 1.8rem;
+            color: #ffffff;
+            font-weight: 300;
+        }
+
+        .total-gifts {
+            font-size: 0.9rem;
+            color: #888;
+        }
+
+        .leaderboard-item {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 15px 20px;
+            margin-bottom: 8px;
+            border-radius: 10px;
+            transition: all 0.3s ease;
+            animation: slideIn 0.4s ease;
+        }
+
+        .leaderboard-item:nth-child(1) {
+            background: linear-gradient(90deg, rgba(255,215,0,0.2), rgba(255,215,0,0.05));
+            border-left: 4px solid #ffd700;
+        }
+
+        .leaderboard-item:nth-child(2) {
+            background: linear-gradient(90deg, rgba(192,192,192,0.2), rgba(192,192,192,0.05));
+            border-left: 4px solid #c0c0c0;
+        }
+
+        .leaderboard-item:nth-child(3) {
+            background: linear-gradient(90deg, rgba(205,127,50,0.2), rgba(205,127,50,0.05));
+            border-left: 4px solid #cd7f32;
+        }
+
+        .leaderboard-item:nth-child(n+4) {
+            background: rgba(255,255,255,0.03);
+            border-left: 4px solid rgba(255,255,255,0.1);
+        }
+
+        .user-info {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+
+        .rank-badge {
+            width: 30px;
+            height: 30px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: 600;
+            font-size: 0.8rem;
+        }
+
+        .rank-1 { background: #ffd700; color: #000; }
+        .rank-2 { background: #c0c0c0; color: #000; }
+        .rank-3 { background: #cd7f32; color: #000; }
+        .rank-other { background: rgba(255,255,255,0.1); color: #fff; }
+
+        .gift-count {
+            font-weight: 600;
+            font-size: 1.1rem;
+        }
+
+        .winner-popup {
+            position: fixed;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            background: linear-gradient(135deg, #000, #333);
+            padding: 40px;
+            border-radius: 15px;
+            font-size: 2rem;
+            font-weight: 300;
+            color: #00ff88;
+            text-align: center;
+            z-index: 1000;
+            box-shadow: 0 20px 40px rgba(0,0,0,0.8);
+            border: 2px solid #00ff88;
+            animation: winnerAnimation 0.8s ease;
+            display: none;
+        }
+
+        .gift-activity {
+            max-height: 200px;
+            overflow-y: auto;
+            margin-top: 20px;
+        }
+
+        .gift-notification {
+            background: rgba(0,255,136,0.1);
+            border: 1px solid rgba(0,255,136,0.3);
+            padding: 8px 12px;
+            border-radius: 6px;
+            margin-bottom: 5px;
+            font-size: 0.85rem;
+            animation: fadeIn 0.5s ease;
+        }
+
+        @keyframes slideIn {
+            from {
+                opacity: 0;
+                transform: translateX(-20px);
+            }
+            to {
+                opacity: 1;
+                transform: translateX(0);
+            }
+        }
+
+        @keyframes winnerAnimation {
+            0% {
+                opacity: 0;
+                transform: translate(-50%, -50%) scale(0.8);
+            }
+            100% {
+                opacity: 1;
+                transform: translate(-50%, -50%) scale(1);
+            }
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; }
+            to { opacity: 1; }
+        }
+
+        .empty-state {
+            text-align: center;
+            opacity: 0.5;
+            padding: 40px 20px;
+            font-style: italic;
+        }
+
+        @media (max-width: 1200px) {
+            .main-grid {
+                grid-template-columns: 1fr;
+                gap: 20px;
+            }
+        }
+
+        @media (max-width: 768px) {
+            .title {
+                font-size: 2rem;
+            }
+            .timer-display {
+                font-size: 2.5rem;
+            }
+            .status-bar {
+                flex-direction: column;
+                gap: 10px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+
+
+        <div class="status-bar">
+            <div class="live-status">
+                <div class="live-dot"></div>
+                <span>Live Tracking Active</span>
+            </div>
+            <div class="webhook-status" id="webhookStatus">
+                Webhook Ready • Last Update: Never
+            </div>
+        </div>
+
+        <div class="main-grid">
+            <div class="timer-section">
+                <div class="timer-display" id="timerDisplay">05:00</div>
+                <div class="timer-controls">
+                    <button class="btn btn-start" onclick="startTimer()">Start</button>
+                    <button class="btn btn-pause" onclick="pauseTimer()">Pause</button>
+                    <button class="btn btn-reset" onclick="resetEverything()">Reset</button>
+                </div>
+                <div class="custom-timer">
+                    <input type="number" id="timerMinutes" placeholder="5" min="1" max="60">
+                    <button class="btn btn-add" onclick="setCustomTimer()">Set Timer</button>
+                </div>
+            </div>
+        </div>
+
+        <div class="leaderboard">
+            <div class="leaderboard-header">
+                <h2 class="leaderboard-title">Leaderboard</h2>
+                <div class="total-gifts">Total: <span id="totalGifts">0</span> gifts</div>
+            </div>
+            <div id="leaderboardList">
+                <div class="empty-state">
+                    No gifts tracked yet. Start the timer and gifts will appear here automatically.
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="winner-popup" id="winnerPopup">
+        <div id="winnerText">🏆 Winner Announced 🏆</div>
+    </div>
+
+    <script>
+        let timer = 300; // 5 minutes
+        let timerInterval = null;
+        let isRunning = false;
+        let gifts = {};
+        let giftActivity = [];
+        let currentWinner = null;
+
+        // Set custom timer duration
+        function setCustomTimer() {
+            const minutes = parseInt(document.getElementById('timerMinutes').value) || 5;
+            if (!isRunning) {
+                timer = minutes * 60;
+                updateTimerDisplay();
+            }
+        }
+
+        // Process incoming gifts
+        function processWebhookGift(username, giftCount) {
+            if (!gifts[username]) {
+                gifts[username] = 0;
+            }
+            gifts[username] += giftCount;
+
+            // Add to activity feed
+            const activity = {
+                username,
+                giftCount,
+                timestamp: new Date().toLocaleTimeString()
+            };
+            giftActivity.unshift(activity);
+            if (giftActivity.length > 10) giftActivity.pop();
+
+            updateLeaderboard();
+            updateGiftActivity();
+            updateWebhookStatus();
+        }
+
+        function updateTimerDisplay() {
+            const minutes = Math.floor(timer / 60);
+            const seconds = timer % 60;
+            document.getElementById('timerDisplay').textContent = 
+                `${minutes.toString().padStart(2, '0')}:${seconds.toString().padStart(2, '0')}`;
+        }
+
+        function startTimer() {
+            if (!isRunning) {
+                isRunning = true;
+                timerInterval = setInterval(() => {
+                    timer--;
+                    updateTimerDisplay();
+                    
+                    if (timer <= 0) {
+                        endRound();
+                    }
+                }, 1000);
+            }
+        }
+
+        function pauseTimer() {
+            isRunning = false;
+            if (timerInterval) {
+                clearInterval(timerInterval);
+                timerInterval = null;
+            }
+        }
+
+        function resetEverything() {
+            pauseTimer();
+            timer = 300;
+            gifts = {};
+            giftActivity = [];
+            currentWinner = null;
+            updateTimerDisplay();
+            updateLeaderboard();
+            updateGiftActivity();
+            document.getElementById('winnerPopup').style.display = 'none';
+            document.getElementById('timerMinutes').value = '';
+        }
+
+        function addGift() {
+            // Only for TikTok Live API integration - no manual entry
+        }
+
+        // TikTok Live API Integration Point
+        function initializeTikTokWebhook() {
+            // Connect to TikTok's Live API for @sebsshoprblx
+            // Expected webhook payload: { username: string, giftType: string, giftCount: number }
+            console.log('TikTok Live API integration ready for @sebsshoprblx');
+        }
+
+        function updateLeaderboard() {
+            const leaderboardList = document.getElementById('leaderboardList');
+            const sortedUsers = Object.entries(gifts).sort((a, b) => b[1] - a[1]);
+            const totalGifts = Object.values(gifts).reduce((sum, count) => sum + count, 0);
+            
+            document.getElementById('totalGifts').textContent = totalGifts;
+            
+            if (sortedUsers.length === 0) {
+                leaderboardList.innerHTML = `
+                    <div class="empty-state">
+                        No gifts tracked yet. Start the timer and gifts will appear here automatically.
+                    </div>
+                `;
+                return;
+            }
+
+            leaderboardList.innerHTML = sortedUsers.map((user, index) => {
+                const [username, count] = user;
+                const position = index + 1;
+                let rankClass = '';
+                
+                if (position === 1) rankClass = 'rank-1';
+                else if (position === 2) rankClass = 'rank-2';
+                else if (position === 3) rankClass = 'rank-3';
+                else rankClass = 'rank-other';
+                
+                return `
+                    <div class="leaderboard-item">
+                        <div class="user-info">
+                            <div class="rank-badge ${rankClass}">${position}</div>
+                            <span>${username}</span>
+                        </div>
+                        <div class="gift-count">${count}</div>
+                    </div>
+                `;
+            }).join('');
+        }
+
+        function updateGiftActivity() {
+            // Activity tracking ready for TikTok Live integration
+        }
+
+        function updateWebhookStatus() {
+            const now = new Date().toLocaleTimeString();
+            document.getElementById('webhookStatus').textContent = `Gift Received • Last Update: ${now}`;
+        }
+
+        function endRound() {
+            pauseTimer();
+            
+            const sortedUsers = Object.entries(gifts).sort((a, b) => b[1] - a[1]);
+            if (sortedUsers.length > 0) {
+                const winner = sortedUsers[0][0];
+                showWinner(winner);
+                currentWinner = winner;
+            }
+        }
+
+        function showWinner(username) {
+            const winnerPopup = document.getElementById('winnerPopup');
+            const winnerText = document.getElementById('winnerText');
+            
+            winnerText.textContent = `🏆 ${username} Wins! 🏆`;
+            winnerPopup.style.display = 'block';
+            
+            setTimeout(() => {
+                winnerPopup.style.display = 'none';
+            }, 4000);
+        }
+
+        // Event listeners for TikTok Live API
+        document.getElementById('timerMinutes').addEventListener('keypress', function(e) {
+            if (e.key === 'Enter') {
+                setCustomTimer();
+            }
+        });
+
+        // Initialize TikTok webhook integration
+        initializeTikTokWebhook();
+
+        // Initialize
+        updateTimerDisplay();
+        updateLeaderboard();
+    </script>
+</body>
+</html>
