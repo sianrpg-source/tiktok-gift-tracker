@@ -98,6 +98,34 @@
             border: 1px solid rgba(255, 255, 255, 0.2);
         }
 
+        .leaderboard-container {
+            max-height: 400px;
+            overflow-y: auto;
+            padding-right: 10px;
+            margin-top: 15px;
+            background: linear-gradient(180deg, rgba(255, 255, 255, 0.05) 0%, rgba(255, 255, 255, 0.02) 100%);
+            border-radius: 15px;
+            padding: 15px;
+        }
+
+        .leaderboard-container::-webkit-scrollbar {
+            width: 8px;
+        }
+
+        .leaderboard-container::-webkit-scrollbar-track {
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 10px;
+        }
+
+        .leaderboard-container::-webkit-scrollbar-thumb {
+            background: linear-gradient(45deg, #ffd93d, #ff6b6b);
+            border-radius: 10px;
+        }
+
+        .leaderboard-container::-webkit-scrollbar-thumb:hover {
+            background: linear-gradient(45deg, #ff6b6b, #ffd93d);
+        }
+
         .section-title {
             font-size: 1.6em;
             margin-bottom: 15px;
@@ -112,15 +140,42 @@
             display: flex;
             justify-content: space-between;
             align-items: center;
-            padding: 15px 20px;
-            margin-bottom: 10px;
+            padding: 20px 25px;
+            margin-bottom: 15px;
             background: linear-gradient(135deg, rgba(255, 255, 255, 0.15), rgba(255, 255, 255, 0.05));
-            border-radius: 15px;
-            border: 1px solid rgba(255, 255, 255, 0.2);
+            border-radius: 20px;
+            border: 2px solid rgba(255, 255, 255, 0.2);
             transform: translateX(-100%);
             animation: slideIn 0.5s ease forwards;
             transition: all 0.3s ease;
             position: relative;
+            opacity: 0;
+        }
+
+        .leaderboard-item:nth-child(1) { 
+            animation-delay: 0.1s; 
+            background: linear-gradient(135deg, rgba(255, 215, 0, 0.25), rgba(255, 215, 0, 0.1));
+            border-color: rgba(255, 215, 0, 0.5);
+            box-shadow: 0 8px 25px rgba(255, 215, 0, 0.3);
+        }
+        .leaderboard-item:nth-child(2) { 
+            animation-delay: 0.2s; 
+            background: linear-gradient(135deg, rgba(192, 192, 192, 0.25), rgba(192, 192, 192, 0.1));
+            border-color: rgba(192, 192, 192, 0.5);
+            box-shadow: 0 6px 20px rgba(192, 192, 192, 0.3);
+        }
+        .leaderboard-item:nth-child(3) { 
+            animation-delay: 0.3s; 
+            background: linear-gradient(135deg, rgba(205, 127, 50, 0.25), rgba(205, 127, 50, 0.1));
+            border-color: rgba(205, 127, 50, 0.5);
+            box-shadow: 0 4px 15px rgba(205, 127, 50, 0.3);
+        }
+
+        @keyframes slideIn {
+            to {
+                transform: translateX(0);
+                opacity: 1;
+            }
         }
 
         .leaderboard-item:hover {
@@ -131,33 +186,64 @@
 
         .leaderboard-rank {
             position: absolute;
-            left: -8px;
+            left: -12px;
             top: 50%;
             transform: translateY(-50%);
             background: linear-gradient(45deg, #ffd93d, #ff6b6b);
             color: white;
-            width: 32px;
-            height: 32px;
+            width: 40px;
+            height: 40px;
             border-radius: 50%;
             display: flex;
             align-items: center;
             justify-content: center;
             font-weight: bold;
-            font-size: 1em;
-            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.3);
+            font-size: 1.2em;
+            box-shadow: 0 6px 20px rgba(0, 0, 0, 0.4);
+            border: 3px solid rgba(255, 255, 255, 0.3);
+        }
+
+        .leaderboard-item:nth-child(1) .leaderboard-rank {
+            background: linear-gradient(45deg, #ffd700, #ffed4e);
+            box-shadow: 0 8px 25px rgba(255, 215, 0, 0.5);
+        }
+
+        .leaderboard-item:nth-child(2) .leaderboard-rank {
+            background: linear-gradient(45deg, #c0c0c0, #e5e5e5);
+            color: #333;
+            box-shadow: 0 6px 20px rgba(192, 192, 192, 0.5);
+        }
+
+        .leaderboard-item:nth-child(3) .leaderboard-rank {
+            background: linear-gradient(45deg, #cd7f32, #daa520);
+            box-shadow: 0 4px 15px rgba(205, 127, 50, 0.5);
         }
 
         .leaderboard-info {
             display: flex;
             flex-direction: column;
-            gap: 6px;
-            margin-left: 32px;
+            gap: 8px;
+            margin-left: 45px;
         }
 
         .leaderboard-name {
-            font-size: 1.2em;
+            font-size: 1.4em;
             font-weight: bold;
             color: #4d9de0;
+            text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.3);
+        }
+
+        .leaderboard-item:nth-child(1) .leaderboard-name {
+            color: #ffd700;
+            font-size: 1.5em;
+        }
+
+        .leaderboard-item:nth-child(2) .leaderboard-name {
+            color: #c0c0c0;
+        }
+
+        .leaderboard-item:nth-child(3) .leaderboard-name {
+            color: #cd7f32;
         }
 
         .leaderboard-stats {
@@ -168,10 +254,23 @@
         }
 
         .leaderboard-value {
-            font-size: 1.4em;
+            font-size: 1.6em;
             font-weight: bold;
             color: #ffd93d;
             text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.3);
+        }
+
+        .leaderboard-item:nth-child(1) .leaderboard-value {
+            color: #ffd700;
+            font-size: 1.8em;
+        }
+
+        .leaderboard-item:nth-child(2) .leaderboard-value {
+            color: #c0c0c0;
+        }
+
+        .leaderboard-item:nth-child(3) .leaderboard-value {
+            color: #cd7f32;
         }
 
         .controls {
@@ -468,10 +567,13 @@
 
         <div class="gifts-section">
             <h3 class="section-title">🏆 Leaderboard</h3>
-            <div id="leaderboardList">
-                <div class="no-gifts">
-                    Connect to your live stream to start tracking gifts! 🚀
+            <div class="leaderboard-container">
+                <div id="leaderboardList">
+                    <div class="no-gifts">
+                        Connect to your live stream to start tracking gifts! 🚀
+                    </div>
                 </div>
+
             </div>
         </div>
 
@@ -487,6 +589,8 @@
                 this.totalValue = 0;
                 this.gifterStats = {};
                 this.sessionStartTime = null;
+                
+
                 
                 // Timer properties
                 this.timerInterval = null;
@@ -665,10 +769,10 @@
                     return;
                 }
                 
-                // Sort gifters by total coin value (descending)
+                // Sort gifters by total coin value (descending) and show only top 3
                 const sortedGifters = Object.entries(this.gifterStats)
                     .sort(([,a], [,b]) => b.value - a.value)
-                    .slice(0, 20); // Show top 20 gifters
+                    .slice(0, 3);
                 
                 this.leaderboardList.innerHTML = sortedGifters.map((gifter, index) => {
                     const [name, stats] = gifter;
@@ -689,6 +793,27 @@
                         </div>
                     `;
                 }).join('');
+                
+                // Add total stats at the bottom
+                if (Object.keys(this.gifterStats).length > 0) {
+                    const totalGifts = Object.values(this.gifterStats).reduce((sum, stats) => sum + stats.count, 0);
+                    const totalValue = Object.values(this.gifterStats).reduce((sum, stats) => sum + stats.value, 0);
+                    const totalGifters = Object.keys(this.gifterStats).length;
+                    
+                    this.leaderboardList.innerHTML += `
+                        <div class="leaderboard-item" style="background: linear-gradient(135deg, rgba(255, 215, 0, 0.2), rgba(255, 215, 0, 0.1)); border-color: rgba(255, 215, 0, 0.4);">
+                            <div class="leaderboard-rank" style="background: linear-gradient(45deg, #ffd700, #ffed4e);">📊</div>
+                            <div class="leaderboard-info">
+                                <div class="leaderboard-name" style="color: #ffd700;">📈 Session Totals</div>
+                                <div class="leaderboard-stats">
+                                    <span>🎁 ${totalGifts} total gifts</span>
+                                    <span>👥 ${totalGifters} gifters</span>
+                                </div>
+                            </div>
+                            <div class="leaderboard-value" style="color: #ffd700;">💎 ${totalValue.toLocaleString()}</div>
+                        </div>
+                    `;
+                }
             }
             
             getSessionTimeString() {
