@@ -1,0 +1,39 @@
+{
+  "name": "tiktok-gift-tracker",
+  "version": "1.0.0",
+  "description": "A beautiful, real-time gift tracking dashboard for TikTok live streams",
+  "main": "index.html",
+  "scripts": {
+    "start": "python -m http.server 8000",
+    "serve": "python3 -m http.server 8000",
+    "dev": "live-server .",
+    "build": "echo 'No build step required - this is a static HTML application'",
+    "test": "echo 'No tests specified'"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/yourusername/tiktok-gift-tracker.git"
+  },
+  "keywords": [
+    "tiktok",
+    "live-stream",
+    "gifts",
+    "tracker",
+    "dashboard",
+    "websocket",
+    "real-time",
+    "streaming"
+  ],
+  "author": "Your Name",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/yourusername/tiktok-gift-tracker/issues"
+  },
+  "homepage": "https://github.com/yourusername/tiktok-gift-tracker#readme",
+  "devDependencies": {
+    "live-server": "^1.2.2"
+  },
+  "engines": {
+    "node": ">=12.0.0"
+  }
+}
