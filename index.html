@@ -260,9 +260,11 @@
 
         .timer-controls {
             display: flex;
-            flex-direction: column;
+            flex-direction: row;
             gap: 20px;
             align-items: center;
+            justify-content: center;
+            flex-wrap: wrap;
         }
 
         .timer-input-group {
@@ -305,15 +307,14 @@
 
         .timer-display {
             text-align: center;
-            padding: 30px;
+            padding: 20px 0;
         }
 
         .timer-time {
-            font-size: 4em;
+            font-size: 2.5em;
             font-weight: bold;
             color: #ffd93d;
             text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.3);
-            margin-bottom: 15px;
             font-family: 'Courier New', monospace;
         }
 
@@ -370,7 +371,11 @@
             }
             
             .timer-time {
-                font-size: 3em;
+                font-size: 2em;
+            }
+            
+            .timer-controls {
+                flex-direction: column;
             }
             
             .timer-buttons {
@@ -443,10 +448,6 @@
             <h3 class="section-title">⏰ Timer Settings</h3>
             <div class="timer-controls">
                 <div class="timer-input-group">
-                    <label>Hours:</label>
-                    <input type="number" id="timerHours" min="0" max="99" value="0" class="timer-input">
-                </div>
-                <div class="timer-input-group">
                     <label>Minutes:</label>
                     <input type="number" id="timerMinutes" min="0" max="59" value="0" class="timer-input">
                 </div>
@@ -460,13 +461,8 @@
                     <button class="btn btn-secondary" id="resetTimerBtn">🔄 Reset</button>
                 </div>
             </div>
-        </div>
-
-        <div class="gifts-section">
-            <h3 class="section-title">⏱️ Live Timer</h3>
             <div class="timer-display">
-                <div class="timer-time" id="timerDisplay">00:00:00</div>
-                <div class="timer-status" id="timerStatus">Timer Ready</div>
+                <div class="timer-time" id="timerDisplay">00:00</div>
             </div>
         </div>
 
@@ -517,14 +513,12 @@
                 this.leaderboardList = document.getElementById('leaderboardList');
                 
                 // Timer elements
-                this.timerHours = document.getElementById('timerHours');
                 this.timerMinutes = document.getElementById('timerMinutes');
                 this.timerSeconds = document.getElementById('timerSeconds');
                 this.startTimerBtn = document.getElementById('startTimerBtn');
                 this.pauseTimerBtn = document.getElementById('pauseTimerBtn');
                 this.resetTimerBtn = document.getElementById('resetTimerBtn');
                 this.timerDisplay = document.getElementById('timerDisplay');
-                this.timerStatus = document.getElementById('timerStatus');
             }
             
             bindEvents() {
@@ -768,16 +762,15 @@
                     this.timerPaused = false;
                 } else {
                     // Start new timer
-                    const hours = parseInt(this.timerHours.value) || 0;
                     const minutes = parseInt(this.timerMinutes.value) || 0;
                     const seconds = parseInt(this.timerSeconds.value) || 0;
                     
-                    if (hours === 0 && minutes === 0 && seconds === 0) {
+                    if (minutes === 0 && seconds === 0) {
                         alert('Please set a timer duration first!');
                         return;
                     }
                     
-                    this.timerDuration = (hours * 3600 + minutes * 60 + seconds) * 1000;
+                    this.timerDuration = (minutes * 60 + seconds) * 1000;
                     this.timerRemaining = this.timerDuration;
                     this.timerStartTime = Date.now();
                 }
@@ -785,8 +778,6 @@
                 this.timerRunning = true;
                 this.startTimerBtn.textContent = '⏹️ Stop Timer';
                 this.pauseTimerBtn.disabled = false;
-                this.timerStatus.textContent = 'Timer Running';
-                this.timerStatus.style.color = '#6bcf7f';
                 
                 this.timerInterval = setInterval(() => {
                     this.updateTimer();
@@ -799,8 +790,6 @@
                 this.startTimerBtn.textContent = '▶️ Start Timer';
                 this.pauseTimerBtn.disabled = true;
                 this.pauseTimerBtn.textContent = '⏸️ Pause';
-                this.timerStatus.textContent = 'Timer Stopped';
-                this.timerStatus.style.color = '#ff6b6b';
                 
                 if (this.timerInterval) {
                     clearInterval(this.timerInterval);
@@ -817,8 +806,6 @@
                 
                 this.startTimerBtn.textContent = '▶️ Resume';
                 this.pauseTimerBtn.textContent = '⏸️ Paused';
-                this.timerStatus.textContent = 'Timer Paused';
-                this.timerStatus.style.color = '#ffd93d';
                 
                 if (this.timerInterval) {
                     clearInterval(this.timerInterval);
@@ -828,12 +815,9 @@
             
             resetTimer() {
                 this.stopTimer();
-                this.timerHours.value = 0;
                 this.timerMinutes.value = 0;
                 this.timerSeconds.value = 0;
-                this.timerDisplay.textContent = '00:00:00';
-                this.timerStatus.textContent = 'Timer Ready';
-                this.timerStatus.style.color = '#4d9de0';
+                this.timerDisplay.textContent = '00:00';
                 this.timerRemaining = 0;
                 this.timerDuration = 0;
             }
@@ -852,19 +836,16 @@
             
             updateTimerDisplay() {
                 const totalSeconds = Math.ceil(this.timerRemaining / 1000);
-                const hours = Math.floor(totalSeconds / 3600);
-                const minutes = Math.floor((totalSeconds % 3600) / 60);
+                const minutes = Math.floor(totalSeconds / 60);
                 const seconds = totalSeconds % 60;
                 
                 this.timerDisplay.textContent = 
-                    `${hours.toString().padStart(2, '0')}:${minutes.toString().padStart(2, '0')}:${seconds.toString().padStart(2, '0')}`;
+                    `${minutes.toString().padStart(2, '0')}:${seconds.toString().padStart(2, '0')}`;
             }
             
             timerComplete() {
                 this.stopTimer();
-                this.timerDisplay.textContent = '00:00:00';
-                this.timerStatus.textContent = 'Timer Complete! 🎉';
-                this.timerStatus.style.color = '#ffd93d';
+                this.timerDisplay.textContent = '00:00';
                 this.showFloatingEmoji('⏰');
                 this.showNotification('Timer completed! ⏰');
             }
