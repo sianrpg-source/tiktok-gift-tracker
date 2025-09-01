@@ -567,6 +567,28 @@
                     .connection-form {
             flex-direction: column;
         }
+        
+        .manual-input-section {
+            margin-top: 15px;
+            padding: 15px;
+            background: rgba(255, 255, 255, 0.05);
+            border-radius: 15px;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+        }
+        
+        .manual-input-section .form-group {
+            margin-bottom: 0;
+        }
+        
+        .manual-input-section input {
+            background: rgba(255, 255, 255, 0.1);
+            border: 1px solid rgba(255, 255, 255, 0.3);
+            color: white;
+        }
+        
+        .manual-input-section input::placeholder {
+            color: rgba(255, 255, 255, 0.6);
+        }
     }
     
     .output-controls {
@@ -651,6 +673,17 @@
                 <button class="btn btn-primary" id="connectBtn">🔗 Connect to Stream</button>
                 <button class="btn btn-secondary" id="clearBtn">🗑️ Clear All</button>
                 <button class="btn btn-secondary" id="testLikeBtn">❤️ Test Like</button>
+            </div>
+            
+            <div class="manual-input-section">
+                <div class="form-group">
+                    <label>Manual Like Input (for testing):</label>
+                    <div style="display: flex; gap: 10px; align-items: center; justify-content: center;">
+                        <input type="text" id="manualLikeUser" placeholder="Username" style="width: 150px;">
+                        <input type="number" id="manualLikeCount" placeholder="Count" value="1" min="1" style="width: 80px;">
+                        <button class="btn btn-secondary" id="addManualLikeBtn">➕ Add Like</button>
+                    </div>
+                </div>
             </div>
             
             <div class="connection-status status-disconnected" id="connectionStatus">
@@ -792,6 +825,11 @@
                 this.outputContainer = document.getElementById('outputContainer');
                 this.clearOutputBtn = document.getElementById('clearOutputBtn');
                 this.toggleOutputBtn = document.getElementById('toggleOutputBtn');
+                
+                // Manual like elements
+                this.manualLikeUser = document.getElementById('manualLikeUser');
+                this.manualLikeCount = document.getElementById('manualLikeCount');
+                this.addManualLikeBtn = document.getElementById('addManualLikeBtn');
             }
             
             bindEvents() {
@@ -802,6 +840,9 @@
                 // Output event bindings
                 this.clearOutputBtn.addEventListener('click', () => this.clearOutput());
                 this.toggleOutputBtn.addEventListener('click', () => this.toggleOutput());
+                
+                // Manual like event binding
+                this.addManualLikeBtn.addEventListener('click', () => this.addManualLike());
                 
                 // Timer event bindings
                 this.startTimerBtn.addEventListener('click', () => this.toggleTimer());
@@ -889,26 +930,87 @@
                 // Log all messages to output
                 this.logToOutput('📡', JSON.stringify(data, null, 2));
                 
+                // Enhanced like detection - check multiple possible formats
+                let likeDetected = false;
+                let likeData = null;
+                
+                // Format 1: tiktok_event with LikeEvent
+                if (data.type === 'tiktok_event' && data.name === 'LikeEvent') {
+                    likeDetected = true;
+                    likeData = data.data;
+                    this.logToOutput('❤️', 'LikeEvent detected in tiktok_event format');
+                }
+                // Format 2: Direct like type
+                else if (data.type === 'like' || data.type === 'Like') {
+                    likeDetected = true;
+                    likeData = data;
+                    this.logToOutput('❤️', 'Like detected in direct format');
+                }
+                // Format 3: Check if message contains like-related keywords
+                else if (this.isLikeMessage(data)) {
+                    likeDetected = true;
+                    likeData = data;
+                    this.logToOutput('❤️', 'Like detected through keyword analysis');
+                }
+                
+                // Handle the like if detected
+                if (likeDetected && likeData) {
+                    this.handleLike(likeData);
+                }
+                
+                // Handle gifts
                 if (data.type === 'tiktok_event' && data.name === 'GiftEvent') {
                     this.handleGift(data.data);
-                } else if (data.type === 'tiktok_event' && data.name === 'LikeEvent') {
-                    this.handleLike(data.data);
-                } else if (data.type === 'like' || data.type === 'Like') {
-                    // Alternative like event formats
-                    this.handleLike(data);
-                } else if (data.type === 'room_event') {
+                }
+                
+                // Handle room events
+                if (data.type === 'room_event') {
                     if (data.name === 'join') {
                         this.showNotification('✅ Successfully joined the live stream!');
                     } else if (data.name === 'end') {
                         this.showNotification('🔴 Live stream ended');
                     }
                 }
+            }
+            
+            isLikeMessage(data) {
+                const dataStr = JSON.stringify(data).toLowerCase();
                 
-                // Debug: Log any message that might contain like information
-                if (JSON.stringify(data).toLowerCase().includes('like')) {
-                    console.log('Potential like-related message:', data);
-                    this.logToOutput('❤️', 'Potential like-related message detected!');
+                // Check for various like-related patterns
+                const likePatterns = [
+                    'like',
+                    'heart',
+                    '❤️',
+                    '💖',
+                    '💕',
+                    '💗',
+                    '💓',
+                    '💝',
+                    'favorite',
+                    'love'
+                ];
+                
+                // Check if any pattern exists
+                for (const pattern of likePatterns) {
+                    if (dataStr.includes(pattern)) {
+                        this.logToOutput('🔍', `Like pattern "${pattern}" found in message`);
+                        return true;
+                    }
                 }
+                
+                // Check for specific field patterns that might indicate likes
+                if (data.like_count || data.likes || data.heart_count || data.hearts) {
+                    this.logToOutput('🔍', 'Like count field detected');
+                    return true;
+                }
+                
+                // Check for user interaction patterns
+                if (data.action === 'like' || data.action === 'heart' || data.event === 'like') {
+                    this.logToOutput('🔍', 'Like action/event detected');
+                    return true;
+                }
+                
+                return false;
             }
             
             handleGift(giftData) {
@@ -986,6 +1088,28 @@
                 const isVisible = this.outputContainer.style.display !== 'none';
                 this.outputContainer.style.display = isVisible ? 'none' : 'block';
                 this.toggleOutputBtn.textContent = isVisible ? '👁️ Show Output' : '👁️ Hide Output';
+            }
+            
+            addManualLike() {
+                const username = this.manualLikeUser.value.trim() || 'Manual User';
+                const count = parseInt(this.manualLikeCount.value) || 1;
+                
+                if (count < 1) {
+                    alert('Please enter a valid like count (minimum 1)');
+                    return;
+                }
+                
+                // Simulate receiving a like
+                this.handleLike({
+                    count: count,
+                    user: { nickname: username }
+                });
+                
+                this.logToOutput('🧪', `Manual like added: ${username} sent ${count} like(s)`);
+                
+                // Clear the input
+                this.manualLikeUser.value = '';
+                this.manualLikeCount.value = '1';
             }
             
             addGift(gift) {
