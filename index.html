@@ -661,7 +661,11 @@
                 this.initElements();
                 this.bindEvents();
                 this.startFloatingEmojis();
-                this.updateTimerDisplay();
+                
+                // Initialize timer display after elements are ready
+                setTimeout(() => {
+                    this.updateTimerDisplay();
+                }, 100);
             }
             
             initElements() {
@@ -692,8 +696,40 @@
                 this.clearBtn.addEventListener('click', () => this.clearData());
                 this.startTimerBtn.addEventListener('click', () => this.toggleTimer());
                 this.resetTimerBtn.addEventListener('click', () => this.resetTimer());
-                this.minutesInput.addEventListener('input', () => this.updateTimerDisplay());
-                this.secondsInput.addEventListener('input', () => this.updateTimerDisplay());
+                
+                // Add event listeners for input changes with better validation
+                this.minutesInput.addEventListener('input', (e) => {
+                    let value = parseInt(e.target.value) || 0;
+                    if (value > 59) {
+                        e.target.value = 59;
+                    } else if (value < 0) {
+                        e.target.value = 0;
+                    }
+                    this.updateTimerDisplay();
+                });
+                
+                this.secondsInput.addEventListener('input', (e) => {
+                    let value = parseInt(e.target.value) || 0;
+                    if (value > 59) {
+                        e.target.value = 59;
+                    } else if (value < 0) {
+                        e.target.value = 0;
+                    }
+                    this.updateTimerDisplay();
+                });
+                
+                // Add enter key support for timer inputs
+                this.minutesInput.addEventListener('keypress', (e) => {
+                    if (e.key === 'Enter' && !this.timerRunning) {
+                        this.startTimer();
+                    }
+                });
+                
+                this.secondsInput.addEventListener('keypress', (e) => {
+                    if (e.key === 'Enter' && !this.timerRunning) {
+                        this.startTimer();
+                    }
+                });
             }
             
             toggleConnection() {
@@ -899,7 +935,7 @@
             
             // Timer Functions
             updateTimerDisplay() {
-                if (this.timerRunning) {
+                if (this.timerRunning && this.timeRemaining !== undefined) {
                     const minutes = Math.floor(this.timeRemaining / 60);
                     const seconds = this.timeRemaining % 60;
                     this.timerDisplay.textContent = `${minutes}:${seconds.toString().padStart(2, '0')}`;
@@ -931,6 +967,8 @@
                 this.timeRemaining = this.timerDuration;
                 this.timerRunning = true;
                 
+                console.log(`Timer started: ${this.timerDuration} seconds`);
+                
                 // Reset data for new timer session
                 this.resetLeaderboardData();
                 
@@ -938,8 +976,12 @@
                 this.minutesInput.disabled = true;
                 this.secondsInput.disabled = true;
                 
+                // Update display immediately
+                this.updateTimerDisplay();
+                
                 this.countdownInterval = setInterval(() => {
                     this.timeRemaining--;
+                    console.log(`Time remaining: ${this.timeRemaining}`);
                     this.updateTimerDisplay();
                     
                     if (this.timeRemaining <= 0) {
@@ -948,7 +990,7 @@
                 }, 1000);
                 
                 this.showFloatingEmoji('⏰');
-                this.showNotification('🎯 Timer started! Tracking gifts now...');
+                this.showNotification('Timer started! Tracking gifts now...');
             }
             
             stopTimer() {
