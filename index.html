@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>TikTok Live Gift Leaderboard - sebsshoprblx</title>
+    <title>TikTok Live Gift Tracker - sebsshoprblx</title>
     <style>
         * {
             margin: 0;
@@ -51,48 +51,6 @@
             100% { background-position: 0% 50%; }
         }
 
-        .timer-section {
-            background: rgba(255, 255, 255, 0.1);
-            backdrop-filter: blur(10px);
-            border-radius: 20px;
-            padding: 30px;
-            margin-bottom: 30px;
-            text-align: center;
-            border: 1px solid rgba(255, 255, 255, 0.2);
-        }
-
-        .timer-display {
-            font-size: 4em;
-            font-weight: bold;
-            color: #ffd93d;
-            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.3);
-            margin-bottom: 20px;
-        }
-
-        .timer-controls {
-            display: flex;
-            gap: 15px;
-            justify-content: center;
-            align-items: center;
-            flex-wrap: wrap;
-            margin-bottom: 20px;
-        }
-
-        .timer-input {
-            padding: 10px 15px;
-            border: 2px solid rgba(255, 255, 255, 0.3);
-            border-radius: 10px;
-            background: rgba(255, 255, 255, 0.1);
-            color: white;
-            font-size: 1.2em;
-            width: 100px;
-            text-align: center;
-        }
-
-        .timer-input::placeholder {
-            color: rgba(255, 255, 255, 0.6);
-        }
-
         .connection-status {
             display: inline-flex;
             align-items: center;
@@ -129,12 +87,138 @@
             100% { box-shadow: 0 0 0 0 rgba(40, 167, 69, 0); }
         }
 
-        .leaderboard {
+        .timer-section {
+            background: rgba(255, 255, 255, 0.1);
+            backdrop-filter: blur(10px);
+            border-radius: 20px;
+            padding: 25px;
+            margin-bottom: 30px;
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            text-align: center;
+        }
+
+        .timer-display {
+            font-size: 4em;
+            font-weight: bold;
+            color: #ffd93d;
+            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.3);
+            margin-bottom: 15px;
+        }
+
+        .timer-controls {
+            display: flex;
+            gap: 10px;
+            justify-content: center;
+            align-items: center;
+            flex-wrap: wrap;
+            margin-top: 15px;
+        }
+
+        .timer-input {
+            padding: 8px 15px;
+            border: 2px solid rgba(255, 255, 255, 0.3);
+            border-radius: 10px;
+            background: rgba(255, 255, 255, 0.1);
+            color: white;
+            font-size: 1em;
+            width: 100px;
+            text-align: center;
+        }
+
+        .winner-modal {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100vw;
+            height: 100vh;
+            background: rgba(0, 0, 0, 0.8);
+            display: none;
+            justify-content: center;
+            align-items: center;
+            z-index: 1000;
+            animation: fadeIn 0.5s ease;
+        }
+
+        .winner-content {
+            background: linear-gradient(45deg, #ff6b6b, #ffd93d);
+            padding: 50px;
+            border-radius: 30px;
+            text-align: center;
+            box-shadow: 0 20px 50px rgba(0, 0, 0, 0.5);
+            animation: bounceIn 0.8s ease;
+        }
+
+        .winner-content h2 {
+            font-size: 3em;
+            margin-bottom: 20px;
+            color: white;
+            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.5);
+        }
+
+        .winner-content .winner-name {
+            font-size: 2.5em;
+            font-weight: bold;
+            color: #fff;
+            margin: 20px 0;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; }
+            to { opacity: 1; }
+        }
+
+        @keyframes bounceIn {
+            0% { transform: scale(0.3) rotate(-10deg); opacity: 0; }
+            50% { transform: scale(1.1) rotate(5deg); }
+            100% { transform: scale(1) rotate(0deg); opacity: 1; }
+        }
+
+        .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 20px;
+            margin-bottom: 30px;
+        }
+
+        .stat-card {
+            background: rgba(255, 255, 255, 0.1);
+            backdrop-filter: blur(10px);
+            border-radius: 15px;
+            padding: 25px;
+            text-align: center;
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+        }
+
+        .stat-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 15px 30px rgba(0, 0, 0, 0.2);
+        }
+
+        .stat-value {
+            font-size: 3em;
+            font-weight: bold;
+            margin-bottom: 10px;
+            color: #ffd93d;
+            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.3);
+        }
+
+        .stat-label {
+            font-size: 1.2em;
+            opacity: 0.9;
+        }
+
+        .main-content {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 30px;
+        }
+
+        .section {
             background: rgba(255, 255, 255, 0.1);
             backdrop-filter: blur(10px);
             border-radius: 20px;
             padding: 30px;
-            margin-bottom: 30px;
             border: 1px solid rgba(255, 255, 255, 0.2);
         }
 
@@ -150,53 +234,106 @@
             display: flex;
             justify-content: space-between;
             align-items: center;
-            padding: 20px 25px;
-            margin-bottom: 15px;
+            padding: 15px 20px;
+            margin-bottom: 10px;
+            background: rgba(255, 255, 255, 0.1);
             border-radius: 15px;
             border: 1px solid rgba(255, 255, 255, 0.2);
             transform: translateX(-100%);
             animation: slideIn 0.5s ease forwards;
             transition: all 0.3s ease;
-            position: relative;
-            overflow: hidden;
-        }
-
-        .leaderboard-item::before {
-            content: '';
-            position: absolute;
-            top: 0;
-            left: 0;
-            right: 0;
-            bottom: 0;
-            background: linear-gradient(45deg, rgba(255, 255, 255, 0.1), rgba(255, 255, 255, 0.05));
-            z-index: -1;
-        }
-
-        .leaderboard-item:nth-child(1) {
-            background: linear-gradient(45deg, #ffd700, #ffed4e);
-            color: #000;
-            box-shadow: 0 10px 30px rgba(255, 215, 0, 0.3);
-            transform: scale(1.05);
-        }
-
-        .leaderboard-item:nth-child(2) {
-            background: linear-gradient(45deg, #c0c0c0, #e8e8e8);
-            color: #000;
-            box-shadow: 0 8px 25px rgba(192, 192, 192, 0.3);
-        }
-
-        .leaderboard-item:nth-child(3) {
-            background: linear-gradient(45deg, #cd7f32, #daa520);
-            color: #fff;
-            box-shadow: 0 6px 20px rgba(205, 127, 50, 0.3);
         }
 
         .leaderboard-item:hover {
-            transform: translateY(-5px) scale(1.02);
+            background: rgba(255, 255, 255, 0.2);
+            transform: scale(1.02);
         }
 
-        .leaderboard-item:nth-child(1):hover {
-            transform: translateY(-5px) scale(1.08);
+        .leaderboard-item.rank-1 {
+            background: linear-gradient(45deg, #ffd700, #ffed4a);
+            color: #333;
+            border: 2px solid #ffd700;
+            animation: glow 2s ease-in-out infinite alternate;
+        }
+
+        .leaderboard-item.rank-2 {
+            background: linear-gradient(45deg, #c0c0c0, #e2e8f0);
+            color: #333;
+            border: 2px solid #c0c0c0;
+        }
+
+        .leaderboard-item.rank-3 {
+            background: linear-gradient(45deg, #cd7f32, #d69e2e);
+            color: #fff;
+            border: 2px solid #cd7f32;
+        }
+
+        @keyframes glow {
+            from { box-shadow: 0 0 20px rgba(255, 215, 0, 0.7); }
+            to { box-shadow: 0 0 30px rgba(255, 215, 0, 1); }
+        }
+
+        .rank-info {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+        }
+
+        .rank-number {
+            font-size: 1.5em;
+            font-weight: bold;
+            min-width: 30px;
+        }
+
+        .rank-1 .rank-number:before { content: "🥇"; font-size: 1.2em; }
+        .rank-2 .rank-number:before { content: "🥈"; font-size: 1.2em; }
+        .rank-3 .rank-number:before { content: "🥉"; font-size: 1.2em; }
+
+        .user-info {
+            display: flex;
+            flex-direction: column;
+        }
+
+        .username {
+            font-size: 1.2em;
+            font-weight: bold;
+        }
+
+        .gift-stats {
+            display: flex;
+            flex-direction: column;
+            align-items: flex-end;
+            gap: 5px;
+        }
+
+        .gift-count {
+            font-size: 1.3em;
+            font-weight: bold;
+            color: #6bcf7f;
+        }
+
+        .gift-value {
+            font-size: 1em;
+            color: #ffd93d;
+        }
+
+        .gift-item {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 15px 20px;
+            margin-bottom: 10px;
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 15px;
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            transform: translateX(-100%);
+            animation: slideIn 0.5s ease forwards;
+            transition: all 0.3s ease;
+        }
+
+        .gift-item:hover {
+            background: rgba(255, 255, 255, 0.2);
+            transform: scale(1.02);
         }
 
         @keyframes slideIn {
@@ -205,40 +342,34 @@
             }
         }
 
-        .rank {
-            font-size: 2em;
-            font-weight: bold;
-            min-width: 60px;
-            text-align: center;
-        }
-
-        .rank-1 { color: #ffd700; }
-        .rank-2 { color: #c0c0c0; }
-        .rank-3 { color: #cd7f32; }
-
-        .gifter-info {
+        .gift-info {
             display: flex;
             flex-direction: column;
             gap: 5px;
-            flex-grow: 1;
-            margin-left: 20px;
         }
 
-        .gifter-name {
-            font-size: 1.4em;
+        .gift-name {
+            font-size: 1.2em;
             font-weight: bold;
+            color: #ff6b6b;
         }
 
-        .gifter-stats {
+        .gift-sender {
             font-size: 1em;
             opacity: 0.8;
+            color: #4d9de0;
         }
 
-        .gift-value {
-            font-size: 1.8em;
-            font-weight: bold;
-            color: #ffd93d;
-            text-align: right;
+        .gift-details {
+            display: flex;
+            flex-direction: column;
+            align-items: flex-end;
+            gap: 5px;
+        }
+
+        .gift-timestamp {
+            font-size: 0.9em;
+            opacity: 0.6;
         }
 
         .controls {
@@ -286,7 +417,7 @@
         }
 
         .btn-timer {
-            background: linear-gradient(45deg, #4d9de0, #6bb5e0);
+            background: linear-gradient(45deg, #4d9de0, #6fa8dc);
             color: white;
             box-shadow: 0 4px 15px rgba(77, 157, 224, 0.3);
         }
@@ -336,48 +467,6 @@
             box-shadow: 0 0 10px rgba(77, 157, 224, 0.3);
         }
 
-        .winner-popup {
-            position: fixed;
-            top: 50%;
-            left: 50%;
-            transform: translate(-50%, -50%);
-            background: linear-gradient(45deg, #ffd700, #ffed4e);
-            color: #000;
-            padding: 40px;
-            border-radius: 20px;
-            box-shadow: 0 20px 50px rgba(0, 0, 0, 0.5);
-            z-index: 1000;
-            text-align: center;
-            animation: popIn 0.5s ease;
-            display: none;
-        }
-
-        .winner-popup.show {
-            display: block;
-        }
-
-        @keyframes popIn {
-            0% {
-                transform: translate(-50%, -50%) scale(0);
-                opacity: 0;
-            }
-            100% {
-                transform: translate(-50%, -50%) scale(1);
-                opacity: 1;
-            }
-        }
-
-        .winner-title {
-            font-size: 3em;
-            margin-bottom: 20px;
-            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.3);
-        }
-
-        .winner-name {
-            font-size: 2em;
-            margin-bottom: 20px;
-        }
-
         .no-data {
             text-align: center;
             padding: 40px;
@@ -385,24 +474,38 @@
             font-size: 1.2em;
         }
 
-        .debug-section {
-            background: rgba(255, 255, 255, 0.1);
-            backdrop-filter: blur(10px);
-            border-radius: 20px;
-            padding: 20px;
-            margin-top: 30px;
-            border: 1px solid rgba(255, 255, 255, 0.2);
+        .floating-emojis {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100vw;
+            height: 100vh;
+            pointer-events: none;
+            z-index: -1;
         }
 
-        .debug-messages {
-            max-height: 200px;
-            overflow-y: auto;
-            font-family: monospace;
-            font-size: 0.9em;
-            background: rgba(0, 0, 0, 0.3);
-            padding: 10px;
-            border-radius: 10px;
-            margin-top: 10px;
+        .emoji {
+            position: absolute;
+            font-size: 2em;
+            animation: float 6s linear infinite;
+            opacity: 0;
+        }
+
+        @keyframes float {
+            0% {
+                transform: translateY(100vh) rotate(0deg);
+                opacity: 0;
+            }
+            10% {
+                opacity: 1;
+            }
+            90% {
+                opacity: 1;
+            }
+            100% {
+                transform: translateY(-100px) rotate(360deg);
+                opacity: 0;
+            }
         }
 
         @media (max-width: 768px) {
@@ -410,30 +513,59 @@
                 font-size: 2em;
             }
             
-            .timer-display {
-                font-size: 2.5em;
+            .stats-grid {
+                grid-template-columns: 1fr;
             }
             
-            .leaderboard-item {
+            .main-content {
+                grid-template-columns: 1fr;
+            }
+            
+            .gift-item, .leaderboard-item {
                 flex-direction: column;
                 text-align: center;
                 gap: 10px;
             }
             
-            .connection-form {
+            .connection-form, .timer-controls {
                 flex-direction: column;
             }
-            
-            .timer-controls {
-                flex-direction: column;
+
+            .timer-display {
+                font-size: 2.5em;
+            }
+
+            .winner-content {
+                padding: 30px;
+                margin: 20px;
+            }
+
+            .winner-content h2 {
+                font-size: 2em;
+            }
+
+            .winner-content .winner-name {
+                font-size: 1.8em;
             }
         }
     </style>
 </head>
 <body>
+    <div class="floating-emojis" id="floatingEmojis"></div>
+    
+    <!-- Winner Modal -->
+    <div class="winner-modal" id="winnerModal">
+        <div class="winner-content">
+            <h2>🎉 WINNER! 🎉</h2>
+            <div class="winner-name" id="winnerName">Loading...</div>
+            <p>Congratulations to our top gifter!</p>
+            <button class="btn btn-primary" onclick="closeWinnerModal()">Awesome!</button>
+        </div>
+    </div>
+    
     <div class="container">
         <div class="header">
-            <h1>🏆 Gift Leaderboard 🏆</h1>
+            <h1>🎁 Gift Tracker 🎁</h1>
             <h2>@sebsshoprblx Live Stream</h2>
             
             <div class="connection-form">
@@ -449,7 +581,7 @@
             
             <div class="controls">
                 <button class="btn btn-primary" id="connectBtn">🔗 Connect to Stream</button>
-                <button class="btn btn-secondary" id="resetBtn">🔄 Reset Leaderboard</button>
+                <button class="btn btn-secondary" id="clearBtn">🗑️ Clear Data</button>
             </div>
             
             <div class="connection-status status-disconnected" id="connectionStatus">
@@ -458,89 +590,110 @@
             </div>
         </div>
 
+        <!-- Timer Section -->
         <div class="timer-section">
-            <div class="timer-display" id="timerDisplay">00:00</div>
+            <div class="timer-display" id="timerDisplay">Set Timer</div>
             <div class="timer-controls">
-                <input type="number" class="timer-input" id="minutesInput" placeholder="Min" min="0" max="59">
-                <span style="font-size: 1.5em;">:</span>
-                <input type="number" class="timer-input" id="secondsInput" placeholder="Sec" min="0" max="59">
-                <button class="btn btn-timer" id="startTimerBtn">▶️ Start Timer</button>
-                <button class="btn btn-timer" id="stopTimerBtn">⏹️ Stop Timer</button>
+                <input type="number" class="timer-input" id="minutesInput" placeholder="MM" min="0" max="59" value="5">
+                <span>:</span>
+                <input type="number" class="timer-input" id="secondsInput" placeholder="SS" min="0" max="59" value="0">
+                <button class="btn btn-timer" id="startTimerBtn">⏰ Start Timer</button>
+                <button class="btn btn-secondary" id="resetTimerBtn">🔄 Reset</button>
             </div>
         </div>
 
-        <div class="leaderboard">
-            <h3 class="section-title">🏆 Top Gifters</h3>
-            <div id="leaderboardList">
-                <div class="no-data">
-                    Connect to your live stream and start receiving gifts! 🎁
+        <div class="stats-grid">
+            <div class="stat-card">
+                <div class="stat-value" id="totalGifts">0</div>
+                <div class="stat-label">Total Gifts</div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-value" id="totalValue">0</div>
+                <div class="stat-label">Total Coins</div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-value" id="sessionTime">0:00</div>
+                <div class="stat-label">Session Time</div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-value" id="totalGifters">0</div>
+                <div class="stat-label">Total Gifters</div>
+            </div>
+        </div>
+
+        <div class="main-content">
+            <div class="section">
+                <h3 class="section-title">🏆 Leaderboard</h3>
+                <div id="leaderboard">
+                    <div class="no-data">
+                        Start the timer to begin tracking! 🚀
+                    </div>
+                </div>
+            </div>
+
+            <div class="section">
+                <h3 class="section-title">🎁 Recent Gifts</h3>
+                <div id="giftsList">
+                    <div class="no-data">
+                        Connect to your live stream! 🎯
+                    </div>
                 </div>
             </div>
         </div>
-
-        <div class="debug-section">
-            <h4>Debug Messages</h4>
-            <div class="debug-messages" id="debugMessages">
-                Waiting for connection...
-            </div>
-        </div>
-    </div>
-
-    <div class="winner-popup" id="winnerPopup">
-        <div class="winner-title">🎉 WINNER! 🎉</div>
-        <div class="winner-name" id="winnerName"></div>
-        <div>Congratulations on being the top gifter!</div>
-        <button class="btn btn-primary" onclick="closeWinnerPopup()" style="margin-top: 20px;">Close</button>
     </div>
 
     <script>
-        class TikTokGiftLeaderboard {
+        class TikTokGiftTracker {
             constructor() {
                 this.ws = null;
-                this.gifters = {};
-                this.timer = null;
-                this.timeRemaining = 0;
+                this.gifts = [];
+                this.totalGifts = 0;
+                this.totalValue = 0;
+                this.gifterStats = {};
+                this.sessionStartTime = null;
+                this.sessionTimer = null;
+                this.countdownTimer = null;
+                this.countdownInterval = null;
                 this.timerRunning = false;
+                this.timerDuration = 0;
+                this.timeRemaining = 0;
                 
                 this.initElements();
                 this.bindEvents();
-                this.debugLog('System initialized');
+                this.startFloatingEmojis();
+                this.updateTimerDisplay();
             }
             
             initElements() {
                 this.connectBtn = document.getElementById('connectBtn');
-                this.resetBtn = document.getElementById('resetBtn');
+                this.clearBtn = document.getElementById('clearBtn');
                 this.serverUrl = document.getElementById('serverUrl');
                 this.apiKey = document.getElementById('apiKey');
                 this.connectionStatus = document.getElementById('connectionStatus');
                 this.statusDot = document.getElementById('statusDot');
                 this.statusText = document.getElementById('statusText');
-                this.leaderboardList = document.getElementById('leaderboardList');
+                this.giftsList = document.getElementById('giftsList');
+                this.leaderboard = document.getElementById('leaderboard');
+                this.totalGiftsEl = document.getElementById('totalGifts');
+                this.totalValueEl = document.getElementById('totalValue');
+                this.sessionTimeEl = document.getElementById('sessionTime');
+                this.totalGiftersEl = document.getElementById('totalGifters');
                 this.timerDisplay = document.getElementById('timerDisplay');
                 this.minutesInput = document.getElementById('minutesInput');
                 this.secondsInput = document.getElementById('secondsInput');
                 this.startTimerBtn = document.getElementById('startTimerBtn');
-                this.stopTimerBtn = document.getElementById('stopTimerBtn');
-                this.debugMessages = document.getElementById('debugMessages');
-                this.winnerPopup = document.getElementById('winnerPopup');
+                this.resetTimerBtn = document.getElementById('resetTimerBtn');
+                this.winnerModal = document.getElementById('winnerModal');
                 this.winnerName = document.getElementById('winnerName');
             }
             
             bindEvents() {
                 this.connectBtn.addEventListener('click', () => this.toggleConnection());
-                this.resetBtn.addEventListener('click', () => this.resetLeaderboard());
-                this.startTimerBtn.addEventListener('click', () => this.startTimer());
-                this.stopTimerBtn.addEventListener('click', () => this.stopTimer());
-            }
-            
-            debugLog(message) {
-                const timestamp = new Date().toLocaleTimeString();
-                const logMessage = `[${timestamp}] ${message}`;
-                console.log(logMessage);
-                
-                const debugDiv = this.debugMessages;
-                debugDiv.innerHTML += logMessage + '\n';
-                debugDiv.scrollTop = debugDiv.scrollHeight;
+                this.clearBtn.addEventListener('click', () => this.clearData());
+                this.startTimerBtn.addEventListener('click', () => this.toggleTimer());
+                this.resetTimerBtn.addEventListener('click', () => this.resetTimer());
+                this.minutesInput.addEventListener('input', () => this.updateTimerDisplay());
+                this.secondsInput.addEventListener('input', () => this.updateTimerDisplay());
             }
             
             toggleConnection() {
@@ -565,7 +718,6 @@
                 this.connectBtn.disabled = true;
                 
                 const wsUrl = `${serverUrl}?unique_id=sebsshoprblx&api_key=${apiKey}`;
-                this.debugLog(`Connecting to: ${wsUrl}`);
                 
                 try {
                     this.ws = new WebSocket(wsUrl);
@@ -574,35 +726,36 @@
                         this.updateStatus('connected', '🟢', 'Connected to Live Stream');
                         this.connectBtn.textContent = '🔌 Disconnect';
                         this.connectBtn.disabled = false;
-                        this.debugLog('WebSocket connection opened');
+                        this.sessionStartTime = Date.now();
+                        this.startSessionTimer();
+                        this.showFloatingEmoji('🎉');
                     };
                     
                     this.ws.onmessage = (event) => {
-                        this.debugLog(`Raw message received: ${event.data}`);
                         try {
                             const data = JSON.parse(event.data);
                             this.handleMessage(data);
                         } catch (e) {
-                            this.debugLog(`Error parsing message: ${e.message}`);
+                            console.error('Error parsing message:', e);
                         }
                     };
                     
-                    this.ws.onclose = (event) => {
+                    this.ws.onclose = () => {
                         this.updateStatus('disconnected', '⚫', 'Disconnected');
                         this.connectBtn.textContent = '🔗 Connect to Stream';
                         this.connectBtn.disabled = false;
-                        this.debugLog(`WebSocket closed: Code ${event.code}, Reason: ${event.reason}`);
+                        this.stopSessionTimer();
                     };
                     
                     this.ws.onerror = (error) => {
-                        this.debugLog(`WebSocket error: ${error}`);
+                        console.error('WebSocket error:', error);
                         this.updateStatus('disconnected', '🔴', 'Connection Error');
                         this.connectBtn.textContent = '🔗 Connect to Stream';
                         this.connectBtn.disabled = false;
                     };
                     
                 } catch (error) {
-                    this.debugLog(`Connection error: ${error.message}`);
+                    console.error('Connection error:', error);
                     this.updateStatus('disconnected', '🔴', 'Failed to Connect');
                     this.connectBtn.textContent = '🔗 Connect to Stream';
                     this.connectBtn.disabled = false;
@@ -617,80 +770,125 @@
             }
             
             handleMessage(data) {
-                this.debugLog(`Processing message: ${JSON.stringify(data)}`);
+                console.log('Received message:', data);
                 
                 if (data.type === 'tiktok_event' && data.name === 'GiftEvent') {
                     this.handleGift(data.data);
                 } else if (data.type === 'room_event') {
                     if (data.name === 'join') {
-                        this.debugLog('Successfully joined the live stream!');
+                        this.showNotification('✅ Successfully joined the live stream!');
                     } else if (data.name === 'end') {
-                        this.debugLog('Live stream ended');
+                        this.showNotification('🔴 Live stream ended');
                     }
-                } else {
-                    this.debugLog(`Unknown message type: ${data.type}`);
                 }
             }
             
             handleGift(giftData) {
-                this.debugLog(`Gift data received: ${JSON.stringify(giftData)}`);
+                // Only track gifts if timer is running
+                if (!this.timerRunning) {
+                    console.log('Gift received but timer not running:', giftData);
+                    return;
+                }
+
+                const gift = {
+                    id: Date.now() + Math.random(),
+                    giftName: giftData.gift?.name || 'Unknown Gift',
+                    giftId: giftData.gift?.id || 0,
+                    sender: giftData.user?.nickname || giftData.user?.unique_id || 'Anonymous',
+                    count: giftData.count || 1,
+                    diamondCost: giftData.gift?.diamond_cost || 0,
+                    timestamp: new Date(),
+                    totalValue: (giftData.gift?.diamond_cost || 0) * (giftData.count || 1)
+                };
                 
-                const giftName = giftData.gift?.name || 'Unknown Gift';
-                const sender = giftData.user?.nickname || giftData.user?.unique_id || 'Anonymous';
-                const count = giftData.count || 1;
-                const diamondCost = giftData.gift?.diamond_cost || giftData.gift?.coin_cost || 1;
-                const totalValue = diamondCost * count;
-                
-                this.debugLog(`Processed gift: ${sender} sent ${count}x ${giftName} (${totalValue} coins)`);
+                this.addGift(gift);
+                this.showFloatingEmoji('🎁');
+                this.showNotification(`🎁 ${gift.sender} sent ${gift.count}x ${gift.giftName}!`);
+            }
+            
+            addGift(gift) {
+                this.gifts.unshift(gift);
+                this.totalGifts += gift.count;
+                this.totalValue += gift.totalValue;
                 
                 // Update gifter stats
-                if (!this.gifters[sender]) {
-                    this.gifters[sender] = {
-                        name: sender,
-                        totalValue: 0,
-                        giftCount: 0,
-                        gifts: []
-                    };
+                if (!this.gifterStats[gift.sender]) {
+                    this.gifterStats[gift.sender] = { count: 0, value: 0 };
+                }
+                this.gifterStats[gift.sender].count += gift.count;
+                this.gifterStats[gift.sender].value += gift.totalValue;
+                
+                // Keep only last 50 gifts
+                if (this.gifts.length > 50) {
+                    this.gifts = this.gifts.slice(0, 50);
                 }
                 
-                this.gifters[sender].totalValue += totalValue;
-                this.gifters[sender].giftCount += count;
-                this.gifters[sender].gifts.push({
-                    name: giftName,
-                    count: count,
-                    value: totalValue,
-                    timestamp: new Date()
-                });
-                
+                this.updateDisplay();
+            }
+            
+            updateDisplay() {
+                this.updateStats();
+                this.updateGiftsList();
                 this.updateLeaderboard();
-                this.debugLog(`Updated leaderboard. ${sender} now has ${this.gifters[sender].totalValue} total coins`);
+            }
+            
+            updateStats() {
+                this.totalGiftsEl.textContent = this.totalGifts.toLocaleString();
+                this.totalValueEl.textContent = this.totalValue.toLocaleString();
+                this.totalGiftersEl.textContent = Object.keys(this.gifterStats).length.toLocaleString();
             }
             
             updateLeaderboard() {
-                const sortedGifters = Object.values(this.gifters)
-                    .sort((a, b) => b.totalValue - a.totalValue)
+                const sortedGifters = Object.entries(this.gifterStats)
+                    .sort((a, b) => b[1].value - a[1].value)
                     .slice(0, 10); // Top 10
                 
                 if (sortedGifters.length === 0) {
-                    this.leaderboardList.innerHTML = '<div class="no-data">No gifts received yet. Start your stream! 🎁</div>';
+                    this.leaderboard.innerHTML = '<div class="no-data">No gifters yet... Start the timer! ⏰</div>';
                     return;
                 }
                 
-                this.leaderboardList.innerHTML = sortedGifters.map((gifter, index) => {
+                this.leaderboard.innerHTML = sortedGifters.map((entry, index) => {
+                    const [gifter, stats] = entry;
                     const rank = index + 1;
-                    const rankEmoji = rank === 1 ? '🥇' : rank === 2 ? '🥈' : rank === 3 ? '🥉' : `#${rank}`;
+                    const rankClass = rank <= 3 ? `rank-${rank}` : '';
                     
                     return `
-                        <div class="leaderboard-item">
-                            <div class="rank rank-${rank}">${rankEmoji}</div>
-                            <div class="gifter-info">
-                                <div class="gifter-name">${gifter.name}</div>
-                                <div class="gifter-stats">${gifter.giftCount} gifts sent</div>
+                        <div class="leaderboard-item ${rankClass}">
+                            <div class="rank-info">
+                                <div class="rank-number">${rank > 3 ? rank : ''}</div>
+                                <div class="user-info">
+                                    <div class="username">${gifter}</div>
+                                </div>
                             </div>
-                            <div class="gift-value">💎 ${gifter.totalValue}</div>
+                            <div class="gift-stats">
+                                <div class="gift-count">${stats.count}x gifts</div>
+                                <div class="gift-value">💎 ${stats.value} coins</div>
+                            </div>
                         </div>
                     `;
                 }).join('');
+            }
+            
+            updateGiftsList() {
+                if (this.gifts.length === 0) {
+                    this.giftsList.innerHTML = '<div class="no-data">No gifts yet... Start the timer! ⏰</div>';
+                    return;
+                }
+                
+                this.giftsList.innerHTML = this.gifts.map(gift => `
+                    <div class="gift-item">
+                        <div class="gift-info">
+                            <div class="gift-name">🎁 ${gift.giftName}</div>
+                            <div class="gift-sender">👤 ${gift.sender}</div>
+                        </div>
+                        <div class="gift-details">
+                            <div class="gift-count">${gift.count}x</div>
+                            <div class="gift-value">💎 ${gift.totalValue} coins</div>
+                            <div class="gift-timestamp">${gift.timestamp.toLocaleTimeString()}</div>
+                        </div>
+                    </div>
+                `).join('');
             }
             
             updateStatus(status, dot, text) {
@@ -699,11 +897,24 @@
                 this.statusText.textContent = text;
             }
             
-            resetLeaderboard() {
-                if (confirm('Are you sure you want to reset the leaderboard? This will clear all gift data.')) {
-                    this.gifters = {};
-                    this.updateLeaderboard();
-                    this.debugLog('Leaderboard reset');
+            // Timer Functions
+            updateTimerDisplay() {
+                if (this.timerRunning) {
+                    const minutes = Math.floor(this.timeRemaining / 60);
+                    const seconds = this.timeRemaining % 60;
+                    this.timerDisplay.textContent = `${minutes}:${seconds.toString().padStart(2, '0')}`;
+                } else {
+                    const minutes = parseInt(this.minutesInput.value) || 0;
+                    const seconds = parseInt(this.secondsInput.value) || 0;
+                    this.timerDisplay.textContent = `${minutes}:${seconds.toString().padStart(2, '0')}`;
+                }
+            }
+            
+            toggleTimer() {
+                if (this.timerRunning) {
+                    this.stopTimer();
+                } else {
+                    this.startTimer();
                 }
             }
             
@@ -712,79 +923,160 @@
                 const seconds = parseInt(this.secondsInput.value) || 0;
                 
                 if (minutes === 0 && seconds === 0) {
-                    alert('Please enter a valid time');
+                    alert('Please set a timer duration!');
                     return;
                 }
                 
-                this.timeRemaining = (minutes * 60) + seconds;
+                this.timerDuration = (minutes * 60) + seconds;
+                this.timeRemaining = this.timerDuration;
                 this.timerRunning = true;
-                this.startTimerBtn.disabled = true;
-                this.stopTimerBtn.disabled = false;
                 
-                this.debugLog(`Timer started: ${minutes}:${seconds.toString().padStart(2, '0')}`);
+                // Reset data for new timer session
+                this.resetLeaderboardData();
                 
-                this.timer = setInterval(() => {
+                this.startTimerBtn.textContent = '⏹️ Stop Timer';
+                this.minutesInput.disabled = true;
+                this.secondsInput.disabled = true;
+                
+                this.countdownInterval = setInterval(() => {
                     this.timeRemaining--;
                     this.updateTimerDisplay();
                     
                     if (this.timeRemaining <= 0) {
-                        this.timerEnded();
+                        this.timerComplete();
+                    }
+                }, 1000);
+                
+                this.showFloatingEmoji('⏰');
+                this.showNotification('🎯 Timer started! Tracking gifts now...');
+            }
+            
+            stopTimer() {
+                this.timerRunning = false;
+                
+                if (this.countdownInterval) {
+                    clearInterval(this.countdownInterval);
+                    this.countdownInterval = null;
+                }
+                
+                this.startTimerBtn.textContent = '⏰ Start Timer';
+                this.minutesInput.disabled = false;
+                this.secondsInput.disabled = false;
+                
+                this.updateTimerDisplay();
+                this.showNotification('⏹️ Timer stopped!');
+            }
+            
+            resetTimer() {
+                this.stopTimer();
+                this.minutesInput.value = 5;
+                this.secondsInput.value = 0;
+                this.updateTimerDisplay();
+                this.resetLeaderboardData();
+                this.showNotification('🔄 Timer reset!');
+            }
+            
+            timerComplete() {
+                this.timerRunning = false;
+                
+                if (this.countdownInterval) {
+                    clearInterval(this.countdownInterval);
+                    this.countdownInterval = null;
+                }
+                
+                this.startTimerBtn.textContent = '⏰ Start Timer';
+                this.minutesInput.disabled = false;
+                this.secondsInput.disabled = false;
+                
+                this.timerDisplay.textContent = '0:00';
+                
+                // Show winner
+                this.showWinner();
+                
+                this.showFloatingEmoji('🎉');
+                this.showNotification('⏰ Time\'s up! Check the winner!');
+            }
+            
+            showWinner() {
+                const sortedGifters = Object.entries(this.gifterStats)
+                    .sort((a, b) => b[1].value - a[1].value);
+                
+                if (sortedGifters.length > 0) {
+                    const winner = sortedGifters[0][0];
+                    this.winnerName.textContent = winner;
+                    this.winnerModal.style.display = 'flex';
+                } else {
+                    this.winnerName.textContent = 'No participants';
+                    this.winnerModal.style.display = 'flex';
+                }
+            }
+            
+            resetLeaderboardData() {
+                this.gifts = [];
+                this.totalGifts = 0;
+                this.totalValue = 0;
+                this.gifterStats = {};
+                this.updateDisplay();
+            }
+            
+            clearData() {
+                if (confirm('Are you sure you want to clear all data? This will also stop the timer.')) {
+                    this.stopTimer();
+                    this.resetLeaderboardData();
+                    this.showFloatingEmoji('🗑️');
+                    this.showNotification('🗑️ All data cleared!');
+                }
+            }
+            
+            startSessionTimer() {
+                this.sessionTimer = setInterval(() => {
+                    if (this.sessionStartTime) {
+                        const elapsed = Date.now() - this.sessionStartTime;
+                        const minutes = Math.floor(elapsed / 60000);
+                        const seconds = Math.floor((elapsed % 60000) / 1000);
+                        this.sessionTimeEl.textContent = `${minutes}:${seconds.toString().padStart(2, '0')}`;
                     }
                 }, 1000);
             }
             
-            stopTimer() {
-                if (this.timer) {
-                    clearInterval(this.timer);
-                    this.timer = null;
+            stopSessionTimer() {
+                if (this.sessionTimer) {
+                    clearInterval(this.sessionTimer);
+                    this.sessionTimer = null;
                 }
-                this.timerRunning = false;
-                this.startTimerBtn.disabled = false;
-                this.stopTimerBtn.disabled = true;
-                this.debugLog('Timer stopped');
             }
             
-            updateTimerDisplay() {
-                const minutes = Math.floor(this.timeRemaining / 60);
-                const seconds = this.timeRemaining % 60;
-                this.timerDisplay.textContent = `${minutes.toString().padStart(2, '0')}:${seconds.toString().padStart(2, '0')}`;
+            showNotification(message) {
+                console.log('Notification:', message);
             }
             
-            timerEnded() {
-                this.stopTimer();
-                this.timerDisplay.textContent = '00:00';
+            showFloatingEmoji(emoji) {
+                const floatingEmojis = document.getElementById('floatingEmojis');
+                const emojiEl = document.createElement('div');
+                emojiEl.className = 'emoji';
+                emojiEl.textContent = emoji;
+                emojiEl.style.left = Math.random() * 100 + 'vw';
+                emojiEl.style.animationDelay = Math.random() * 2 + 's';
+                floatingEmojis.appendChild(emojiEl);
                 
-                const sortedGifters = Object.values(this.gifters)
-                    .sort((a, b) => b.totalValue - a.totalValue);
-                
-                if (sortedGifters.length > 0) {
-                    const winner = sortedGifters[0];
-                    this.showWinner(winner.name);
-                    this.debugLog(`Timer ended! Winner: ${winner.name} with ${winner.totalValue} coins`);
-                } else {
-                    this.debugLog('Timer ended but no gifts received');
-                }
-                
-                // Reset leaderboard after showing winner
                 setTimeout(() => {
-                    this.gifters = {};
-                    this.updateLeaderboard();
-                    this.debugLog('Leaderboard automatically reset after timer ended');
-                }, 5000);
+                    emojiEl.remove();
+                }, 6000);
             }
             
-            showWinner(winnerName) {
-                this.winnerName.textContent = winnerName;
-                this.winnerPopup.classList.add('show');
+            startFloatingEmojis() {
+                const emojis = ['✨', '🎉', '🎊', '💫', '⭐', '🌟'];
+                setInterval(() => {
+                    const randomEmoji = emojis[Math.floor(Math.random() * emojis.length)];
+                    this.showFloatingEmoji(randomEmoji);
+                }, 3000);
             }
         }
         
-        function closeWinnerPopup() {
-            document.getElementById('winnerPopup').classList.remove('show');
+        // Global function to close winner modal
+        function closeWinnerModal() {
+            document.getElementById('winnerModal').style.display = 'none';
         }
         
-        // Initialize the leaderboard
-        const leaderboard = new TikTokGiftLeaderboard();
-    </script>
-</body>
-</html>
+        // Initialize the gift tracker
+        const tracker = new TikTokGiftTracker();
