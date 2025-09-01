@@ -20,24 +20,24 @@
         }
 
         .container {
-            max-width: 1400px;
+            max-width: 800px;
             margin: 0 auto;
             padding: 20px;
         }
 
         .header {
             text-align: center;
-            margin-bottom: 30px;
+            margin-bottom: 20px;
             background: rgba(255, 255, 255, 0.1);
             backdrop-filter: blur(10px);
             border-radius: 20px;
-            padding: 30px;
+            padding: 20px;
             border: 1px solid rgba(255, 255, 255, 0.2);
         }
 
         .header h1 {
-            font-size: 3em;
-            margin-bottom: 10px;
+            font-size: 2.5em;
+            margin-bottom: 8px;
             background: linear-gradient(45deg, #ff6b6b, #ffd93d, #6bcf7f, #4d9de0);
             background-size: 300% 300%;
             -webkit-background-clip: text;
@@ -94,13 +94,13 @@
             background: rgba(255, 255, 255, 0.1);
             backdrop-filter: blur(10px);
             border-radius: 20px;
-            padding: 30px;
+            padding: 20px;
             border: 1px solid rgba(255, 255, 255, 0.2);
         }
 
         .section-title {
-            font-size: 2em;
-            margin-bottom: 20px;
+            font-size: 1.6em;
+            margin-bottom: 15px;
             text-align: center;
             color: #ffd93d;
             text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.3);
@@ -112,8 +112,8 @@
             display: flex;
             justify-content: space-between;
             align-items: center;
-            padding: 20px 25px;
-            margin-bottom: 15px;
+            padding: 15px 20px;
+            margin-bottom: 10px;
             background: linear-gradient(135deg, rgba(255, 255, 255, 0.15), rgba(255, 255, 255, 0.05));
             border-radius: 15px;
             border: 1px solid rgba(255, 255, 255, 0.2);
@@ -131,44 +131,44 @@
 
         .leaderboard-rank {
             position: absolute;
-            left: -10px;
+            left: -8px;
             top: 50%;
             transform: translateY(-50%);
             background: linear-gradient(45deg, #ffd93d, #ff6b6b);
             color: white;
-            width: 40px;
-            height: 40px;
+            width: 32px;
+            height: 32px;
             border-radius: 50%;
             display: flex;
             align-items: center;
             justify-content: center;
             font-weight: bold;
-            font-size: 1.2em;
+            font-size: 1em;
             box-shadow: 0 4px 15px rgba(0, 0, 0, 0.3);
         }
 
         .leaderboard-info {
             display: flex;
             flex-direction: column;
-            gap: 8px;
-            margin-left: 40px;
+            gap: 6px;
+            margin-left: 32px;
         }
 
         .leaderboard-name {
-            font-size: 1.4em;
+            font-size: 1.2em;
             font-weight: bold;
             color: #4d9de0;
         }
 
         .leaderboard-stats {
             display: flex;
-            gap: 20px;
-            font-size: 1em;
+            gap: 15px;
+            font-size: 0.9em;
             opacity: 0.9;
         }
 
         .leaderboard-value {
-            font-size: 1.6em;
+            font-size: 1.4em;
             font-weight: bold;
             color: #ffd93d;
             text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.3);
@@ -178,15 +178,15 @@
             display: flex;
             gap: 15px;
             justify-content: center;
-            margin-bottom: 30px;
+            margin-bottom: 20px;
             flex-wrap: wrap;
         }
 
         .btn {
-            padding: 12px 25px;
+            padding: 10px 20px;
             border: none;
             border-radius: 25px;
-            font-size: 1em;
+            font-size: 0.9em;
             font-weight: bold;
             cursor: pointer;
             transition: all 0.3s ease;
@@ -220,10 +220,10 @@
 
         .connection-form {
             display: flex;
-            gap: 15px;
+            gap: 12px;
             justify-content: center;
             align-items: center;
-            margin-bottom: 20px;
+            margin-bottom: 15px;
             flex-wrap: wrap;
         }
 
@@ -239,12 +239,12 @@
         }
 
         .form-group input {
-            padding: 10px 15px;
+            padding: 8px 12px;
             border: 2px solid rgba(255, 255, 255, 0.3);
             border-radius: 10px;
             background: rgba(255, 255, 255, 0.1);
             color: white;
-            font-size: 1em;
+            font-size: 0.9em;
             backdrop-filter: blur(5px);
         }
 
@@ -256,6 +256,71 @@
             outline: none;
             border-color: #4d9de0;
             box-shadow: 0 0 10px rgba(77, 157, 224, 0.3);
+        }
+
+        .timer-controls {
+            display: flex;
+            flex-direction: column;
+            gap: 20px;
+            align-items: center;
+        }
+
+        .timer-input-group {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .timer-input-group label {
+            font-size: 1em;
+            font-weight: bold;
+            color: #ffd93d;
+        }
+
+        .timer-input {
+            width: 80px;
+            padding: 10px;
+            border: 2px solid rgba(255, 255, 255, 0.3);
+            border-radius: 10px;
+            background: rgba(255, 255, 255, 0.1);
+            color: white;
+            font-size: 1.2em;
+            text-align: center;
+            backdrop-filter: blur(5px);
+        }
+
+        .timer-input:focus {
+            outline: none;
+            border-color: #4d9de0;
+            box-shadow: 0 0 10px rgba(77, 157, 224, 0.3);
+        }
+
+        .timer-buttons {
+            display: flex;
+            gap: 15px;
+            flex-wrap: wrap;
+            justify-content: center;
+        }
+
+        .timer-display {
+            text-align: center;
+            padding: 30px;
+        }
+
+        .timer-time {
+            font-size: 4em;
+            font-weight: bold;
+            color: #ffd93d;
+            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.3);
+            margin-bottom: 15px;
+            font-family: 'Courier New', monospace;
+        }
+
+        .timer-status {
+            font-size: 1.3em;
+            color: #4d9de0;
+            opacity: 0.9;
         }
 
         .no-gifts {
@@ -304,17 +369,26 @@
                 font-size: 2em;
             }
             
+            .timer-time {
+                font-size: 3em;
+            }
+            
+            .timer-buttons {
+                flex-direction: column;
+                align-items: center;
+            }
+            
             .leaderboard-item {
                 flex-direction: column;
                 text-align: center;
-                gap: 15px;
-                padding: 25px 20px;
+                gap: 12px;
+                padding: 20px 15px;
             }
             
             .leaderboard-rank {
                 position: static;
                 transform: none;
-                margin: 0 auto 10px;
+                margin: 0 auto 8px;
             }
             
             .leaderboard-info {
@@ -366,6 +440,37 @@
 
 
         <div class="gifts-section">
+            <h3 class="section-title">⏰ Timer Settings</h3>
+            <div class="timer-controls">
+                <div class="timer-input-group">
+                    <label>Hours:</label>
+                    <input type="number" id="timerHours" min="0" max="99" value="0" class="timer-input">
+                </div>
+                <div class="timer-input-group">
+                    <label>Minutes:</label>
+                    <input type="number" id="timerMinutes" min="0" max="59" value="0" class="timer-input">
+                </div>
+                <div class="timer-input-group">
+                    <label>Seconds:</label>
+                    <input type="number" id="timerSeconds" min="0" max="59" value="0" class="timer-input">
+                </div>
+                <div class="timer-buttons">
+                    <button class="btn btn-primary" id="startTimerBtn">▶️ Start Timer</button>
+                    <button class="btn btn-secondary" id="pauseTimerBtn" disabled>⏸️ Pause</button>
+                    <button class="btn btn-secondary" id="resetTimerBtn">🔄 Reset</button>
+                </div>
+            </div>
+        </div>
+
+        <div class="gifts-section">
+            <h3 class="section-title">⏱️ Live Timer</h3>
+            <div class="timer-display">
+                <div class="timer-time" id="timerDisplay">00:00:00</div>
+                <div class="timer-status" id="timerStatus">Timer Ready</div>
+            </div>
+        </div>
+
+        <div class="gifts-section">
             <h3 class="section-title">🏆 Leaderboard</h3>
             <div id="leaderboardList">
                 <div class="no-gifts">
@@ -387,6 +492,15 @@
                 this.gifterStats = {};
                 this.sessionStartTime = null;
                 
+                // Timer properties
+                this.timerInterval = null;
+                this.timerRunning = false;
+                this.timerPaused = false;
+                this.timerStartTime = 0;
+                this.timerPauseTime = 0;
+                this.timerDuration = 0;
+                this.timerRemaining = 0;
+                
                 this.initElements();
                 this.bindEvents();
                 this.startFloatingEmojis();
@@ -401,11 +515,26 @@
                 this.statusDot = document.getElementById('statusDot');
                 this.statusText = document.getElementById('statusText');
                 this.leaderboardList = document.getElementById('leaderboardList');
+                
+                // Timer elements
+                this.timerHours = document.getElementById('timerHours');
+                this.timerMinutes = document.getElementById('timerMinutes');
+                this.timerSeconds = document.getElementById('timerSeconds');
+                this.startTimerBtn = document.getElementById('startTimerBtn');
+                this.pauseTimerBtn = document.getElementById('pauseTimerBtn');
+                this.resetTimerBtn = document.getElementById('resetTimerBtn');
+                this.timerDisplay = document.getElementById('timerDisplay');
+                this.timerStatus = document.getElementById('timerStatus');
             }
             
             bindEvents() {
                 this.connectBtn.addEventListener('click', () => this.toggleConnection());
                 this.clearBtn.addEventListener('click', () => this.clearGifts());
+                
+                // Timer event bindings
+                this.startTimerBtn.addEventListener('click', () => this.toggleTimer());
+                this.pauseTimerBtn.addEventListener('click', () => this.pauseTimer());
+                this.resetTimerBtn.addEventListener('click', () => this.resetTimer());
             }
             
             toggleConnection() {
@@ -545,7 +674,7 @@
                 // Sort gifters by total coin value (descending)
                 const sortedGifters = Object.entries(this.gifterStats)
                     .sort(([,a], [,b]) => b.value - a.value)
-                    .slice(0, 10); // Show top 10 gifters
+                    .slice(0, 20); // Show top 20 gifters
                 
                 this.leaderboardList.innerHTML = sortedGifters.map((gifter, index) => {
                     const [name, stats] = gifter;
@@ -621,6 +750,123 @@
                     const randomEmoji = emojis[Math.floor(Math.random() * emojis.length)];
                     this.showFloatingEmoji(randomEmoji);
                 }, 3000);
+            }
+            
+            // Timer methods
+            toggleTimer() {
+                if (this.timerRunning) {
+                    this.stopTimer();
+                } else {
+                    this.startTimer();
+                }
+            }
+            
+            startTimer() {
+                if (this.timerPaused) {
+                    // Resume paused timer
+                    this.timerStartTime = Date.now() - (this.timerDuration - this.timerRemaining);
+                    this.timerPaused = false;
+                } else {
+                    // Start new timer
+                    const hours = parseInt(this.timerHours.value) || 0;
+                    const minutes = parseInt(this.timerMinutes.value) || 0;
+                    const seconds = parseInt(this.timerSeconds.value) || 0;
+                    
+                    if (hours === 0 && minutes === 0 && seconds === 0) {
+                        alert('Please set a timer duration first!');
+                        return;
+                    }
+                    
+                    this.timerDuration = (hours * 3600 + minutes * 60 + seconds) * 1000;
+                    this.timerRemaining = this.timerDuration;
+                    this.timerStartTime = Date.now();
+                }
+                
+                this.timerRunning = true;
+                this.startTimerBtn.textContent = '⏹️ Stop Timer';
+                this.pauseTimerBtn.disabled = false;
+                this.timerStatus.textContent = 'Timer Running';
+                this.timerStatus.style.color = '#6bcf7f';
+                
+                this.timerInterval = setInterval(() => {
+                    this.updateTimer();
+                }, 100);
+            }
+            
+            stopTimer() {
+                this.timerRunning = false;
+                this.timerPaused = false;
+                this.startTimerBtn.textContent = '▶️ Start Timer';
+                this.pauseTimerBtn.disabled = true;
+                this.pauseTimerBtn.textContent = '⏸️ Pause';
+                this.timerStatus.textContent = 'Timer Stopped';
+                this.timerStatus.style.color = '#ff6b6b';
+                
+                if (this.timerInterval) {
+                    clearInterval(this.timerInterval);
+                    this.timerInterval = null;
+                }
+            }
+            
+            pauseTimer() {
+                if (!this.timerRunning) return;
+                
+                this.timerPaused = true;
+                this.timerRunning = false;
+                this.timerRemaining = this.timerDuration - (Date.now() - this.timerStartTime);
+                
+                this.startTimerBtn.textContent = '▶️ Resume';
+                this.pauseTimerBtn.textContent = '⏸️ Paused';
+                this.timerStatus.textContent = 'Timer Paused';
+                this.timerStatus.style.color = '#ffd93d';
+                
+                if (this.timerInterval) {
+                    clearInterval(this.timerInterval);
+                    this.timerInterval = null;
+                }
+            }
+            
+            resetTimer() {
+                this.stopTimer();
+                this.timerHours.value = 0;
+                this.timerMinutes.value = 0;
+                this.timerSeconds.value = 0;
+                this.timerDisplay.textContent = '00:00:00';
+                this.timerStatus.textContent = 'Timer Ready';
+                this.timerStatus.style.color = '#4d9de0';
+                this.timerRemaining = 0;
+                this.timerDuration = 0;
+            }
+            
+            updateTimer() {
+                const elapsed = Date.now() - this.timerStartTime;
+                this.timerRemaining = Math.max(0, this.timerDuration - elapsed);
+                
+                if (this.timerRemaining <= 0) {
+                    this.timerComplete();
+                    return;
+                }
+                
+                this.updateTimerDisplay();
+            }
+            
+            updateTimerDisplay() {
+                const totalSeconds = Math.ceil(this.timerRemaining / 1000);
+                const hours = Math.floor(totalSeconds / 3600);
+                const minutes = Math.floor((totalSeconds % 3600) / 60);
+                const seconds = totalSeconds % 60;
+                
+                this.timerDisplay.textContent = 
+                    `${hours.toString().padStart(2, '0')}:${minutes.toString().padStart(2, '0')}:${seconds.toString().padStart(2, '0')}`;
+            }
+            
+            timerComplete() {
+                this.stopTimer();
+                this.timerDisplay.textContent = '00:00:00';
+                this.timerStatus.textContent = 'Timer Complete! 🎉';
+                this.timerStatus.style.color = '#ffd93d';
+                this.showFloatingEmoji('⏰');
+                this.showNotification('Timer completed! ⏰');
             }
         }
         
