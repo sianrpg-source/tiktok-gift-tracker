@@ -183,6 +183,7 @@
             border-radius: 15px;
             padding: 20px;
             border: 1px solid rgba(255, 255, 255, 0.2);
+            min-height: 600px; /* Extended height */
         }
 
         .section-title {
@@ -383,6 +384,27 @@
             margin-bottom: 15px;
         }
 
+        /* Empty state styling */
+        .empty-leaderboard {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            height: 300px;
+            opacity: 0.6;
+        }
+
+        .empty-leaderboard-icon {
+            font-size: 4em;
+            margin-bottom: 20px;
+        }
+
+        .empty-leaderboard-text {
+            font-size: 1.2em;
+            text-align: center;
+            line-height: 1.5;
+        }
+
         @media (max-width: 768px) {
             .container {
                 max-width: 100%;
@@ -415,6 +437,10 @@
             .btn {
                 width: 200px;
                 justify-content: center;
+            }
+
+            .leaderboard {
+                min-height: 400px;
             }
         }
     </style>
@@ -461,9 +487,7 @@
         <div class="leaderboard">
             <h3 class="section-title">🏆 Top Gifters</h3>
             <div id="leaderboardList">
-                <div class="no-data">
-                    Connect to your live stream and start receiving gifts! 🎁
-                </div>
+                <!-- Content will be populated by JavaScript -->
             </div>
         </div>
     </div>
@@ -483,9 +507,12 @@
                 this.timer = null;
                 this.timeRemaining = 0;
                 this.timerRunning = false;
+                this.reconnectAttempts = 0;
+                this.maxReconnectAttempts = 5;
                 
                 this.initElements();
                 this.bindEvents();
+                this.updateLeaderboard(); // Initialize empty leaderboard
                 console.log('System initialized');
             }
             
@@ -541,11 +568,24 @@
                 try {
                     this.ws = new WebSocket(wsUrl);
                     
+                    // Set a connection timeout
+                    const connectionTimeout = setTimeout(() => {
+                        if (this.ws.readyState === WebSocket.CONNECTING) {
+                            console.log('Connection timeout - closing WebSocket');
+                            this.ws.close();
+                            this.updateStatus('disconnected', '🔴', 'Connection Timeout');
+                            this.connectBtn.textContent = '🔗 Connect to Stream';
+                            this.connectBtn.disabled = false;
+                        }
+                    }, 10000); // 10 second timeout
+                    
                     this.ws.onopen = () => {
+                        clearTimeout(connectionTimeout);
                         this.updateStatus('connected', '🟢', 'Connected to Live Stream');
                         this.connectBtn.textContent = '🔌 Disconnect';
                         this.connectBtn.disabled = false;
-                        console.log('WebSocket connection opened');
+                        this.reconnectAttempts = 0; // Reset reconnect counter
+                        console.log('WebSocket connection opened successfully');
                     };
                     
                     this.ws.onmessage = (event) => {
@@ -559,14 +599,23 @@
                     };
                     
                     this.ws.onclose = (event) => {
+                        clearTimeout(connectionTimeout);
                         this.updateStatus('disconnected', '⚫', 'Disconnected');
                         this.connectBtn.textContent = '🔗 Connect to Stream';
                         this.connectBtn.disabled = false;
-                        console.log(`WebSocket closed: Code ${event.code}, Reason: ${event.reason}`);
+                        console.log(`WebSocket closed: Code ${event.code}, Reason: ${event.reason || 'No reason provided'}`);
+                        
+                        // Log detailed close reasons
+                        if (event.code === 1006) {
+                            console.log('Connection closed abnormally - likely server not running or network issue');
+                        } else if (event.code === 1008) {
+                            console.log('Connection rejected - check API key or server configuration');
+                        }
                     };
                     
                     this.ws.onerror = (error) => {
-                        console.log(`WebSocket error: ${error}`);
+                        clearTimeout(connectionTimeout);
+                        console.log(`WebSocket error:`, error);
                         this.updateStatus('disconnected', '🔴', 'Connection Error');
                         this.connectBtn.textContent = '🔗 Connect to Stream';
                         this.connectBtn.disabled = false;
@@ -582,7 +631,7 @@
             
             disconnect() {
                 if (this.ws) {
-                    this.ws.close();
+                    this.ws.close(1000, 'User requested disconnect');
                     this.ws = null;
                 }
             }
@@ -595,9 +644,14 @@
                 } else if (data.type === 'room_event') {
                     if (data.name === 'join') {
                         console.log('Successfully joined the live stream!');
+                        this.updateStatus('connected', '🟢', 'Connected & Listening');
                     } else if (data.name === 'end') {
                         console.log('Live stream ended');
+                        this.updateStatus('disconnected', '🟡', 'Stream Ended');
                     }
+                } else if (data.type === 'error') {
+                    console.log(`Server error: ${data.message}`);
+                    this.updateStatus('disconnected', '🔴', 'Server Error');
                 } else {
                     console.log(`Unknown message type: ${data.type}`);
                 }
@@ -640,10 +694,18 @@
             updateLeaderboard() {
                 const sortedGifters = Object.values(this.gifters)
                     .sort((a, b) => b.totalValue - a.totalValue)
-                    .slice(0, 20); // Show top 20 instead of 10
+                    .slice(0, 25); // Show top 25 for extended leaderboard
                 
                 if (sortedGifters.length === 0) {
-                    this.leaderboardList.innerHTML = '<div class="no-data">No gifts received yet. Start your stream! 🎁</div>';
+                    this.leaderboardList.innerHTML = `
+                        <div class="empty-leaderboard">
+                            <div class="empty-leaderboard-icon">🎁</div>
+                            <div class="empty-leaderboard-text">
+                                Waiting for gifts...<br>
+                                Make sure you're connected and live!
+                            </div>
+                        </div>
+                    `;
                     return;
                 }
                 
@@ -757,5 +819,3 @@
         // Initialize the leaderboard
         const leaderboard = new TikTokGiftLeaderboard();
     </script>
-</body>
-</html>
