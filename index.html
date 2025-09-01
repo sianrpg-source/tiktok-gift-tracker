@@ -564,10 +564,68 @@
                 flex-wrap: wrap;
             }
             
-            .connection-form {
-                flex-direction: column;
-            }
+                    .connection-form {
+            flex-direction: column;
         }
+    }
+    
+    .output-controls {
+        display: flex;
+        gap: 15px;
+        justify-content: center;
+        margin-bottom: 15px;
+        flex-wrap: wrap;
+    }
+    
+    .output-container {
+        max-height: 300px;
+        overflow-y: auto;
+        background: rgba(0, 0, 0, 0.3);
+        border-radius: 15px;
+        padding: 15px;
+        font-family: 'Courier New', monospace;
+        font-size: 0.9em;
+        line-height: 1.4;
+    }
+    
+    .output-item {
+        display: flex;
+        gap: 10px;
+        margin-bottom: 8px;
+        padding: 8px;
+        background: rgba(255, 255, 255, 0.05);
+        border-radius: 8px;
+        border-left: 3px solid #4d9de0;
+    }
+    
+    .output-timestamp {
+        color: #ffd93d;
+        font-weight: bold;
+        min-width: 80px;
+    }
+    
+    .output-message {
+        color: #ffffff;
+        word-break: break-all;
+    }
+    
+    .output-container::-webkit-scrollbar {
+        width: 8px;
+    }
+    
+    .output-container::-webkit-scrollbar-track {
+        background: rgba(255, 255, 255, 0.1);
+        border-radius: 10px;
+    }
+    
+    .output-container::-webkit-scrollbar-thumb {
+        background: linear-gradient(45deg, #ffd93d, #ff6b6b);
+        border-radius: 10px;
+    }
+    
+    .output-container::-webkit-scrollbar-thumb:hover {
+        background: linear-gradient(45deg, #ff6b6b, #ffd93d);
+    }
     </style>
 </head>
 <body>
@@ -592,6 +650,7 @@
             <div class="controls">
                 <button class="btn btn-primary" id="connectBtn">🔗 Connect to Stream</button>
                 <button class="btn btn-secondary" id="clearBtn">🗑️ Clear All</button>
+                <button class="btn btn-secondary" id="testLikeBtn">❤️ Test Like</button>
             </div>
             
             <div class="connection-status status-disconnected" id="connectionStatus">
@@ -663,6 +722,20 @@
             </div>
         </div>
 
+        <div class="gifts-section">
+            <h3 class="section-title">📡 Live Output</h3>
+            <div class="output-controls">
+                <button class="btn btn-secondary" id="clearOutputBtn">🗑️ Clear Output</button>
+                <button class="btn btn-secondary" id="toggleOutputBtn">👁️ Hide Output</button>
+            </div>
+            <div class="output-container" id="outputContainer">
+                <div class="output-item">
+                    <span class="output-timestamp">[System]</span>
+                    <span class="output-message">Ready to receive messages...</span>
+                </div>
+            </div>
+        </div>
+
 
     </div>
 
@@ -694,6 +767,7 @@
             initElements() {
                 this.connectBtn = document.getElementById('connectBtn');
                 this.clearBtn = document.getElementById('clearBtn');
+                this.testLikeBtn = document.getElementById('testLikeBtn');
                 this.serverUrl = document.getElementById('serverUrl');
                 this.apiKey = document.getElementById('apiKey');
                 this.connectionStatus = document.getElementById('connectionStatus');
@@ -713,11 +787,21 @@
                 this.pauseTimerBtn = document.getElementById('pauseTimerBtn');
                 this.resetTimerBtn = document.getElementById('resetTimerBtn');
                 this.timerDisplay = document.getElementById('timerDisplay');
+                
+                // Output elements
+                this.outputContainer = document.getElementById('outputContainer');
+                this.clearOutputBtn = document.getElementById('clearOutputBtn');
+                this.toggleOutputBtn = document.getElementById('toggleOutputBtn');
             }
             
             bindEvents() {
                 this.connectBtn.addEventListener('click', () => this.toggleConnection());
                 this.clearBtn.addEventListener('click', () => this.clearGifts());
+                this.testLikeBtn.addEventListener('click', () => this.testLike());
+                
+                // Output event bindings
+                this.clearOutputBtn.addEventListener('click', () => this.clearOutput());
+                this.toggleOutputBtn.addEventListener('click', () => this.toggleOutput());
                 
                 // Timer event bindings
                 this.startTimerBtn.addEventListener('click', () => this.toggleTimer());
@@ -751,13 +835,14 @@
                 try {
                     this.ws = new WebSocket(wsUrl);
                     
-                    this.ws.onopen = () => {
-                        this.updateStatus('connected', '🟢', 'Connected to Live Stream');
-                        this.connectBtn.textContent = '🔌 Disconnect';
-                        this.connectBtn.disabled = false;
-                        this.sessionStartTime = Date.now();
-                        this.showFloatingEmoji('🎉');
-                    };
+                                         this.ws.onopen = () => {
+                         this.updateStatus('connected', '🟢', 'Connected to Live Stream');
+                         this.connectBtn.textContent = '🔌 Disconnect';
+                         this.connectBtn.disabled = false;
+                         this.sessionStartTime = Date.now();
+                         this.showFloatingEmoji('🎉');
+                         this.logToOutput('🔗', 'WebSocket connected successfully');
+                     };
                     
                     this.ws.onmessage = (event) => {
                         try {
@@ -768,18 +853,20 @@
                         }
                     };
                     
-                    this.ws.onclose = () => {
-                        this.updateStatus('disconnected', '⚫', 'Disconnected');
-                        this.connectBtn.textContent = '🔗 Connect to Stream';
-                        this.connectBtn.disabled = false;
-                    };
-                    
-                    this.ws.onerror = (error) => {
-                        console.error('WebSocket error:', error);
-                        this.updateStatus('disconnected', '🔴', 'Connection Error');
-                        this.connectBtn.textContent = '🔗 Connect to Stream';
-                        this.connectBtn.disabled = false;
-                    };
+                                         this.ws.onclose = () => {
+                         this.updateStatus('disconnected', '⚫', 'Disconnected');
+                         this.connectBtn.textContent = '🔗 Connect to Stream';
+                         this.connectBtn.disabled = false;
+                         this.logToOutput('🔌', 'WebSocket disconnected');
+                     };
+                     
+                     this.ws.onerror = (error) => {
+                         console.error('WebSocket error:', error);
+                         this.updateStatus('disconnected', '🔴', 'Connection Error');
+                         this.connectBtn.textContent = '🔗 Connect to Stream';
+                         this.connectBtn.disabled = false;
+                         this.logToOutput('❌', 'WebSocket error: ' + error);
+                     };
                     
                 } catch (error) {
                     console.error('Connection error:', error);
@@ -799,16 +886,28 @@
             handleMessage(data) {
                 console.log('Received message:', data);
                 
+                // Log all messages to output
+                this.logToOutput('📡', JSON.stringify(data, null, 2));
+                
                 if (data.type === 'tiktok_event' && data.name === 'GiftEvent') {
                     this.handleGift(data.data);
                 } else if (data.type === 'tiktok_event' && data.name === 'LikeEvent') {
                     this.handleLike(data.data);
+                } else if (data.type === 'like' || data.type === 'Like') {
+                    // Alternative like event formats
+                    this.handleLike(data);
                 } else if (data.type === 'room_event') {
                     if (data.name === 'join') {
                         this.showNotification('✅ Successfully joined the live stream!');
                     } else if (data.name === 'end') {
                         this.showNotification('🔴 Live stream ended');
                     }
+                }
+                
+                // Debug: Log any message that might contain like information
+                if (JSON.stringify(data).toLowerCase().includes('like')) {
+                    console.log('Potential like-related message:', data);
+                    this.logToOutput('❤️', 'Potential like-related message detected!');
                 }
             }
             
@@ -827,6 +926,7 @@
                 this.addGift(gift);
                 this.showFloatingEmoji('🎁');
                 this.showNotification(`🎁 ${gift.sender} sent ${gift.count}x ${gift.giftName}!`);
+                this.logToOutput('🎁', `${gift.sender} sent ${gift.count}x ${gift.giftName} (${gift.totalValue} diamonds)`);
             }
 
             handleLike(likeData) {
@@ -840,6 +940,52 @@
                 } else {
                     this.showNotification(`❤️ ${likeData.user?.nickname || 'Someone'} sent a like!`);
                 }
+                this.logToOutput('❤️', `${likeData.user?.nickname || 'Someone'} sent ${likeCount} like(s)`);
+            }
+
+            testLike() {
+                // Simulate receiving a like for testing
+                this.handleLike({
+                    count: 1,
+                    user: { nickname: 'Test User' }
+                });
+                console.log('Test like added! Total likes:', this.totalLikes);
+                this.logToOutput('🧪', 'Test like added! Total likes: ' + this.totalLikes);
+            }
+            
+            logToOutput(icon, message) {
+                const timestamp = new Date().toLocaleTimeString();
+                const outputItem = document.createElement('div');
+                outputItem.className = 'output-item';
+                outputItem.innerHTML = `
+                    <span class="output-timestamp">[${timestamp}]</span>
+                    <span class="output-message">${icon} ${message}</span>
+                `;
+                
+                this.outputContainer.appendChild(outputItem);
+                
+                // Auto-scroll to bottom
+                this.outputContainer.scrollTop = this.outputContainer.scrollHeight;
+                
+                // Keep only last 100 messages
+                while (this.outputContainer.children.length > 100) {
+                    this.outputContainer.removeChild(this.outputContainer.firstChild);
+                }
+            }
+            
+            clearOutput() {
+                this.outputContainer.innerHTML = `
+                    <div class="output-item">
+                        <span class="output-timestamp">[System]</span>
+                        <span class="output-message">Output cleared at ${new Date().toLocaleTimeString()}</span>
+                    </div>
+                `;
+            }
+            
+            toggleOutput() {
+                const isVisible = this.outputContainer.style.display !== 'none';
+                this.outputContainer.style.display = isVisible ? 'none' : 'block';
+                this.toggleOutputBtn.textContent = isVisible ? '👁️ Show Output' : '👁️ Hide Output';
             }
             
             addGift(gift) {
